@@ -52,17 +52,24 @@ void Graph<V,E>::removeEdge(const string & key) {
 /*
 */
 template <class V, class E>
-bool Graph<V,E>::areAdjacent(const Vertex v1, const Vertex v2) {
+bool Graph<V,E>::areAdjacent(const string key1, const string key2) const {
+    for(auto it : adjlist(key1)){   //go through the adjacency list 
+        E compareEdge = *it.get();  //store the current edge
+        if(compareEdge.source().key() == key2 || compareEdge.dest().key() == key2){ //checks to see if the keys of the edges match meaning they are adjacent
+            return true;    //if they match then they are adjacent
+        }
+    }
+    return false;  
 }
 /*use refernce wrapper 
 */
 template <class V, class E>
-E list<reference_wrapper<E>> Graph<V,E>::incidentEdges(const string key) {
+E list<reference_wrapper<E>> Graph<V,E>::incidentEdges(const string key) const{
     list<reference_wrapper<E>> edges;
-    for(auto it: adjList.at(key)){  //goes through adjList sifting through edges coming out
+    for(auto it : adjList.at(key)){  //goes through adjList sifting through edges coming out
         edges.push_back(*it);       //adds to list if outbound edge
     }
-    return edges;
+    return edges;   //returns the set of edges that were incident to vertex
 }
 
 
