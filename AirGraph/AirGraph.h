@@ -1,5 +1,3 @@
-#include <unordered_map>
-
 // Include core graph class
 #include "../Graph/graph.h"
 
@@ -81,14 +79,13 @@ class AirGraph : private Graph {
         // Default air graph constructor
         AirGraph();
         // Insert airports into graph from vector of vectors
-        void insertAirports(std::vector<std::vector<std::string>>
-        );
+        void insertAirports(std::vector<std::vector<std::string>>);
         // Insert flights into graph from vector of vectors
         void insertFLights(std::vector<std::vector<std::string>>);
         // Find shortest path between two airports
-        findShortestPath(std::string, std::string);
+        std::vector<flight> findShortestPath(std::string, std::string);
         // Find shortest landmark path
-        findLandmarkPath(std::vector<std::vector<std::string>>);
+        std::vector<flight> findLandmarkPath(std::vector<std::vector<std::string>>);
     
     private:
         // Dictionary (Hash Map) to store airport details 
