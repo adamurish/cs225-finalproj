@@ -21,14 +21,28 @@ std::vector<std::vector<string>>* FileParser::read_file(){  //File parser to air
 std::vector<string> FileParser::csvline_to_vector(string line){
     std::vector<string> ret;
     string tmp;
+    bool in_quotes = false;
     for(char c : line){
-        if(c == ','){
+        if(c == ',' && !in_quotes){
             ret.push_back(tmp);
             tmp = "";   //Reset tmp after every comma
-        }else{
+        }
+        else if(c == '\"'){ //keep track of quoted text to ignore comments in names
+            in_quotes = !in_quotes; //toggle quotes
+        }
+        else{
             tmp.push_back(c);   //Add every character of comma seperated entry to tmp string
         }
     }
     ret.push_back(tmp); //To catch last entry, which has no comma after it
     return ret;
+}
+
+/*Graph*/ void FileParser::airports_to_graph(std::vector<std::vector<string>>* airport_csv, std::vector<std::vector<string>>* routes_csv){
+    // Graph g;
+    for(std::vector<string> line : *airport_csv){ //for every airport
+        // g.insertVertex(line[FileParser::iata_idx]); // use IATA callsign for vertex name
+        std::cout << line[FileParser::iata_idx] << std::endl; //temporary testing line
+    }
+    // return g;
 }
