@@ -28,9 +28,9 @@ Graph::Graph(bool weighted, int numVertices, unsigned long seed)
 
     vector<Vertex> vertices; //creates a vector of vertices
 
-    for (int i = 0; i < numVertices; i++) //using the num 
+    for (int i = 0; i < numVertices; i++) //using the num
     {
-        insertVertex(ORD);
+        insertVertex(to_string(i));
         vertices.push_back(to_string(i));
     }
 
