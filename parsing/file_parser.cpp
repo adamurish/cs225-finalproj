@@ -6,7 +6,7 @@ FileParser::FileParser(string file_name) : file_name(file_name){
 }
 
 FileParser::~FileParser(){
-    for(auto line : file){
+    for(std::vector<string>* line : file){
         delete line;
     }
     delete file;
