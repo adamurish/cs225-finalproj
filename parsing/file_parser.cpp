@@ -15,9 +15,8 @@ std::vector<std::vector<string>>* FileParser::read_file(){  //File parser to air
             ret->push_back(csvline_to_vector(f_line)); //add processed line to return vector
         }
     }
-    return ret;
+    return ret; 
 }
-
 std::vector<string> FileParser::csvline_to_vector(string line){
     std::vector<string> ret;
     string tmp;
