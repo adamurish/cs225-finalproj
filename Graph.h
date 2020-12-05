@@ -20,7 +20,9 @@ class Graph {
     private:
         list<E> edgeList;
         unordered_map<string, v> vMap;
-        unordered_map<string, list<edgeListIter>> adjList:
+        unordered_map<string, list<edgeListIter>> adjList;
+        // mutable unordered_map<Vertex, unordered_map<Vertex, Edge>> adjacency_list;
+
 };
 
 #include "Graph.hpp"

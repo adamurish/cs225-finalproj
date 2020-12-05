@@ -66,7 +66,7 @@ bool Graph<V,E>::areAdjacent(const string key1, const string key2) const {
 template <class V, class E>
 E list<reference_wrapper<E>> Graph<V,E>::incidentEdges(const string key) const{
     list<reference_wrapper<E>> edges;
-    for(auto it : adjList.at(key)){  //goes through adjList sifting through edges coming out
+    for(auto it : adjList.at(key)){  //goes through adjList
         edges.push_back(*it);       //adds to list if outbound edge
     }
     return edges;   //returns the set of edges that were incident to vertex
