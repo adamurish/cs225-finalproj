@@ -72,30 +72,45 @@ struct flight {
 
 
 // Class to represent graph of air traffic
-// Wraps base graph class in order to tie multiple data structures
-// together under one interface.
 class AirGraph : private Graph {
     public:
         // Default air graph constructor
         AirGraph();
+
+        // Airgraph destructor
+        ~AirGraph();
+        
         // Insert airports into graph from vector of vectors
-        void insertAirports(std::vector<std::vector<std::string>>);
+        // @param vec Pointer to vector contiaing airport vector pointers
+        void insertAirports(std::vector<std::vector<std::string>*>* vec);
+        
         // Insert flights into graph from vector of vectors
-        void insertFLights(std::vector<std::vector<std::string>>);
+        // @param vec Pointer to vector contiaing airport vector pointers
+        void insertFLights(std::vector<std::vector<std::string>*>* vec);
+        
         // Find shortest path between two airports
-        std::vector<flight> findShortestPath(std::string, std::string);
+        // @param airport1 OpenFlights id of source airport
+        // @param airport2 OpenFlights id of destination airport
+        // @return Vector containing flights creating shortest path
+        std::vector<flight> findShortestPath(Vertex airport1, Vertex airport2);
+        
         // Find shortest landmark path
-        std::vector<flight> findLandmarkPath(std::vector<std::vector<std::string>>);
+        // @param vec Vector of OpenFlight IDs of airports in order of visitation
+        // @return Vector
+        std::vector<flight> findLandmarkPath(std::vector<Vertex> vec);
     
     private:
         // Dictionary (Hash Map) to store airport details 
         std::unordered_map<Vertex, airport> airport_dict;
+
         // Dictionary (Hash Map) to store airline details
         std::unordered_map<Vertex, airline> airline_dict;
-        // Vector of vectors to correlate flight data to graph
+
+        // Vector of vector pointers to correlate flight data to graph
         std::vector<std::vector<flight>*> flight_board;
 
         // Helper function to parse user airport input
-        // Accepts IATA or code openFlights id as input
+        // @param input User input string of IATA code or OpenFlights id
+        // @return Vertex containing OpenFlights ID of requested airport
         Vertex airport_parser_ (string input);
 };
