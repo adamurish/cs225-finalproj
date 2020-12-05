@@ -12,5 +12,6 @@ class FileParser{
         std::vector<std::vector<string>*>* file;
     public:
         FileParser(string file_name); //constructor, mostly empty
+        ~FileParser();
         std::vector<std::vector<string>*>* get_file();
 };

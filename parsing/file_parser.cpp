@@ -5,6 +5,13 @@ FileParser::FileParser(string file_name) : file_name(file_name){
     file = read_file(file_name);
 }
 
+FileParser::~FileParser(){
+    for(auto line : file){
+        delete line;
+    }
+    delete file;
+}
+
 std::vector<std::vector<string>*>* FileParser::read_file(string file_name){  //File parser to airport vector
     auto ret = new std::vector<std::vector<string>*>(); //setup return vector
     std::ifstream airport_file; //create file object
