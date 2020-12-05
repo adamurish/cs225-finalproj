@@ -1,5 +1,5 @@
 // Include core graph class
-#include "../Graph/graph.h"
+#include "../graph/graph.h"
 
 // Define airport structure
 struct airport {
