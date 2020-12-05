@@ -16,3 +16,18 @@
 	- File Parser: Adam and Jason
 	- Beginning of graph structure: Armando and Sebastian
 	- Makefile: Everyone
+
+## Week 2
+### Design Log
+- Determined best method for flight data and graph correlation:
+	- Graph is simple and directed where airport vertices are labeled by unique open flights id.
+	- Dictionary containing airport data keyed by open flights id allows for airport lookup from graph.
+	- Dictionary containing open flights id keyed by IATA code allows for user input of origin and destination airports via friendly names (i.e. ORD, LAX, JFK, ...)
+- Minimized number of edges in order improve algorithm runtimes:
+	- Since edge weights are determined via geographical distance between airports, only one edge is required to encode a set of flights from one airport to another in the same direction.
+	- The label on each edge is an index in a vector of flight vectors allowing for retrieval of flight information for any flight between two airports.
+	- Constant lookup time from vector matrix allows for minimal runtime penalties for pertinent lookups of first airline and number of airlines servicing route.
+### Work Log
+- Restructured project directory to properly separate project components.
+- Implemented file parser to take flight data from CSV file and import it into the project.
+- Began writing core test cases.
