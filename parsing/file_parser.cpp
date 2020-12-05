@@ -1,12 +1,12 @@
 #include "file_parser.h"
 
 
-FileParser::FileParser(string file_name) : file_name(file_name){
+FileParser::FileParser(string file_name){
     file = read_file(file_name);
 }
 
 FileParser::~FileParser(){
-    for(auto line : file){
+    for(auto line : *file){
         delete line;
     }
     delete file;
