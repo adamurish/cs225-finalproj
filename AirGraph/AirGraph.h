@@ -9,9 +9,9 @@ struct airport {
     string city;
     // ISO 3166-1 country code
     string country;
-    // IATA airport identifier
+    // IATA airport identifier (Common 3 letter code)
     string iata;
-    // ICAO code (Common 3 letter code)
+    // ICAO code
     string icao;
     // Latitude (decimal degrees with up to 6 sig figs)
     string latitude;
@@ -44,23 +44,17 @@ struct airline {
     // ISO 3166-1 country code
     string country;
     // Whether airline is active or not
-    //(*** UNRELIABLE DATA SOURCE DO NOT USE ***)
+    //(**UNRELIABLE DATA SOURCE DO NOT USE**)
     string active;
 };
 
 // Define flight structure
 struct flight {
-    // Airline ICAO code
-    string icao;
-    // Airline openFlights unique ID
-    string open_ID;
-    // Source airport ICAO code
-    string src_icao;
-    // Source airport openFlights unique ID
+    // Airline OpenFlights unique ID
+    string airline_open_ID;
+    // Source airport OpenFlights unique ID
     string src_open_ID;
-    // Destination airport ICAO code
-    string dest_icao;
-    // Destination airport openFlights unique ID
+    // Destination airport OpenFlights unique ID
     string dest_open_ID;
     // Codeshare (If yes Y, else empty)
     string codeshare;
@@ -74,20 +68,24 @@ struct flight {
 // Class to represent graph of air traffic
 class AirGraph : private Graph {
     public:
-        // Default air graph constructor
-        AirGraph();
+        // Default AirGraph constructor
+        AirGraph(); // Implemented
 
         // Airgraph destructor
-        ~AirGraph();
+        ~AirGraph(); // Implemented
         
         // Insert airports into graph from vector of vectors
         // @param vec Pointer to vector contiaing airport vector pointers
-        void insertAirports(std::vector<std::vector<std::string>*>* vec);
+        void insertAirports(std::vector<std::vector<string>*>* vec); // Implemented
         
-        // Insert flights into graph from vector of vectors
+        // Insert flights into graph from vector of vectors after inserting airports
         // @param vec Pointer to vector contiaing airport vector pointers
-        void insertFLights(std::vector<std::vector<std::string>*>* vec);
+        void insertFlights(std::vector<std::vector<string>*>* vec); // Implemented
         
+        // Store airline data into airlines dictionary
+        // @param vec Pointer to vector contiaing airlines vector pointers
+        void storeAirlines(std::vector<std::vector<string>*>* vec); // Implemented
+
         // Find shortest path between two airports
         // @param airport1 OpenFlights id of source airport
         // @param airport2 OpenFlights id of destination airport
@@ -96,21 +94,30 @@ class AirGraph : private Graph {
         
         // Find shortest landmark path
         // @param vec Vector of OpenFlight IDs of airports in order of visitation
-        // @return Vector
+        // @return TBD
         std::vector<flight> findLandmarkPath(std::vector<Vertex> vec);
     
     private:
-        // Dictionary (Hash Map) to store airport details 
-        std::unordered_map<Vertex, airport> airport_dict;
+        // Dictionary (Hash Map) to store OpenFlight_ID->airport mappings
+        std::unordered_map<Vertex, airport> airports;
 
-        // Dictionary (Hash Map) to store airline details
-        std::unordered_map<Vertex, airline> airline_dict;
+        // Dictionary (Hash Map) to store OpenFlight_ID->airline mappings
+        std::unordered_map<Vertex, airline> airlines;
+
+        // Dictionary (Hash Map) to store IATA->OpenFlight_ID mappings
+        std::unordered_map<string, Vertex> iata_to_id;
 
         // Vector of vector pointers to correlate flight data to graph
-        std::vector<std::vector<flight>*> flight_board;
+        std::vector<std::vector<flight>*> flights;
 
         // Helper function to parse user airport input
         // @param input User input string of IATA code or OpenFlights id
         // @return Vertex containing OpenFlights ID of requested airport
         Vertex airport_parser_ (string input);
+
+        // Helper function to calculate distance between two airports using the Spherical Law of Cosines
+        // @param airport1 reference to first airport
+        // @param airport2 refernece to second airport
+        // @return Distance between airports as integer
+        int airport_dist_ (airport airport1, airport airport2);
 };
