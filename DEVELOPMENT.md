@@ -30,4 +30,7 @@
 ### Work Log
 - Restructured project directory to properly separate project components.
 - Implemented file parser to take flight data from CSV file and import it into the project.
-- Began writing core test cases.
+- Implemented all core graph functionality for air traffic.
+- Wrote a Makefile to build all modules and link together both the main executable and the test executable.
+	***(Unfinished)***
+- 
