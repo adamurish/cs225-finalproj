@@ -1,5 +1,6 @@
 // Define pi for spherical distance calculations
 #define pi_over_180 0.017453292519943295769236907684886127134428718885417
+// Store radius of earth for geospatial distance calculations
 #define earth_R 6371E3
 
 // Include AirGraph Header
@@ -14,7 +15,7 @@ AirGraph::AirGraph() : Graph(true, true) {
 
 AirGraph::~AirGraph() {
     // Free memory from flights vector
-    for (std::vector<flight>* route : flights) {
+    for (std::vector<flight>* route : routes) {
         // Delete current route
         delete route;
     }
@@ -45,7 +46,7 @@ void AirGraph::insertAirports(std::vector<std::vector<string>*>* vec) {
         currAirport.tz_olson = (*airportPtr)[11];
         currAirport.source = (*airportPtr)[12];
 
-        // Insert airport into OpenFlights_ID->airport dictionary
+        // Insert airport into airports dictionary
         airports.insert(std::pair<Vertex, airport>(open_id, currAirport));
 
         // Check if IATA code exists
@@ -69,36 +70,39 @@ void AirGraph::insertFlights(std::vector<std::vector<string>*>* vec) {
         currFlight.stops = (*flightPtr)[7];
         currFlight.equipment = (*flightPtr)[8];
 
-        // Retrieve source airport
-        airport src = airports[currFlight.src_open_ID];
-        // Retreive destination airport
-        airport dest = airports[currFlight.dest_open_ID];
-
-        // Check if edge exists between source and destination
+        // Check if route exists between source and destination
         if (edgeExists(currFlight.src_open_ID, currFlight.dest_open_ID)) {
-            // Get index of edge in flight board
+            // Get index of route in flight board
             int index = std::stoi(getEdgeLabel(currFlight.src_open_ID, currFlight.dest_open_ID));
-            // Get pointer to flight vector
-            std::vector<flight>* route = flights[index];
-            // Insert flight into flights vector
+            // Get pointer to route vector
+            std::vector<flight>* route = routes[index];
+            // Insert flight into route vector
             route->push_back(currFlight);
         }
-        // Edge doesn't exist yet between vertices
+
+        // Route doesn't exist yet between vertices
         else {
-            // Calculate index of next flights vector
-            int index = flights.size();
+            // Calculate index of next route vector
+            int index = routes.size();
+
             // Insert edge between vertices
             insertEdge(currFlight.src_open_ID, currFlight.dest_open_ID);
             // Set edge weight to index of flights
             setEdgeLabel(currFlight.src_open_ID, currFlight.dest_open_ID, std::to_string(index));
+            
+            // Retrieve source airport
+            airport src = airports[currFlight.src_open_ID];
+            // Retreive destination airport
+            airport dest = airports[currFlight.dest_open_ID];
             // Calculate distance of edge
             int weight = airport_dist_(src, dest);
             // Set weight of edge
             setEdgeWeight(currFlight.src_open_ID, currFlight.dest_open_ID, weight);
+            
             // Create new vector for route
             std::vector<flight>* route = new std::vector<flight>();
-            // Insert vector into index
-            flights.push_back(route);
+            // Insert vector into flight board at index
+            routes.push_back(route);
             // Insert flight into route
             route->push_back(currFlight);
         }

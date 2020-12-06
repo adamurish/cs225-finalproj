@@ -108,7 +108,7 @@ class AirGraph : private Graph {
         std::unordered_map<string, Vertex> iata_to_id;
 
         // Vector of vector pointers to correlate flight data to graph
-        std::vector<std::vector<flight>*> flights;
+        std::vector<std::vector<flight>*> routes;
 
         // Helper function to parse user airport input
         // @param input User input string of IATA code or OpenFlights id
