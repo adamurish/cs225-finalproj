@@ -1,6 +1,6 @@
 #include "../cs225/catch/catch.hpp"
-#include "../Graph/Graph.h"
-#include "../Graph/Edge.h"
+#include "../graph/graph.h"
+#include "../graph/edge.h"
 
 TEST_CASE("Test Case Name")
 {
