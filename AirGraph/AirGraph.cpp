@@ -132,9 +132,6 @@ void AirGraph::storeAirlines(std::vector<std::vector<string>*>* vec) {
 }
 
 int AirGraph::airport_dist_ (airport airport1, airport airport2) {
-    // Start string to double conversion at index 0
-    std::size_t index = 0;
-    
     // Calculate phi of airport 1
     double phi1 = std::stod(airport1.latitude) * pi_over_180;
     // Calculate phi of airport 2
