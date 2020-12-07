@@ -60,8 +60,20 @@ clean :
 	rm -f ./build/* ./main ./test
 
 # Download all datasets from OpenFlights
+fetch : ./datasets ./datasets/airports.dat ./datasets/airlines.dat ./datasets/routes.dat
+
+# Create datasets directory
 datasets :
-	mkdir ./datasets &\
-	curl https://raw.githubusercontent.com/jpatokal/openflights/master/data/airlines.dat -o ./datasets/airlines.dat &\
-	curl https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat -o ./datasets/airports.dat &\
+	mkdir ./datasets
+
+# Download airports dataset
+./datasets/airports.dat : 
+	curl https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat -o ./datasets/airports.dat
+
+# Download airlines dataset
+./datasets/airlines.dat : 
+	curl https://raw.githubusercontent.com/jpatokal/openflights/master/data/airlines.dat -o ./datasets/airlines.dat
+
+# Download routs dataset
+./datasets/routes.dat : 
 	curl https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat -o ./datasets/routes.dat
