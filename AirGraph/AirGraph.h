@@ -66,7 +66,7 @@ struct flight {
 
 
 // Class to represent graph of air traffic
-class AirGraph : private Graph {
+class AirGraph : public Graph {
     public:
         // Default AirGraph constructor
         AirGraph(); // Implemented
