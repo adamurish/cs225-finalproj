@@ -11,8 +11,8 @@ CXXFLAGS = -std=c++1y -stdlib=libc++ -c -g -O0 -Wall -Wextra -Werror -pedantic
 LDFLAGS = -std=c++1y -stdlib=libc++ -lc++abi
 
 # Link final project
-main : ./build/AirGraph.o ./build/file_parser.o ./build/main.o ./build/graph.o ./build/random.o
-	$(LD) ./build/main.o ./build/AirGraph.o ./build/graph.o ./build/random.o ./build/file_parser.o $(LDFLAGS) -o $@
+main : ./build/AirGraph.o ./build/file_parser.o ./build/main.o ./build/graph.o 
+	$(LD) ./build/main.o ./build/AirGraph.o ./build/graph.o ./build/file_parser.o $(LDFLAGS) -o $@
 
 # Compile final project
 ./build/main.o : ./main.cpp ./AirGraph/AirGraph.h ./parsing/file_parser.h
@@ -35,15 +35,11 @@ test: ./build/tests.o ./build/catchmain.o
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 # Compile Graph (required by AirGraph)
-./build/graph.o : ./graph/graph.cpp ./graph/graph.h ./graph/edge.h ./graph/random.h
-	$(CXX) $(CXXFLAGS) $< -o $@
-
-# Compile random (required by Graph)
-./build/random.o : ./graph/random.cpp
+./build/graph.o : ./graph/graph.cpp ./graph/graph.h ./graph/edge.h ./graph/random.h ./graph/random.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 # Compile file_parser
-./build/file_parser.o : ./parsing/file_parser.cpp ./parsing/file_parser.h
+./build/file_parser.o : ./parsing/file_parser.cpp ./parsing/file_parser.h 
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 # Clean all build artifacts
