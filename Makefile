@@ -3,7 +3,8 @@ CXX = clang++
 # Set linker to clang++
 LD = clang++
 
-output_msg: ; $(CLANG_VERSION_MSG)
+ALL_NON_EXE_OBJS = ./build/AirGraph.o ./build/file_parser.o ./build/graph.o ./build/PNG.o ./build/HSLAPixel.o ./build/lodepng.o
+
 
 # Set compiler flags to standard for course
 CXXFLAGS = -std=c++1y -stdlib=libc++ -c -g -O0 -Wall -Wextra -Werror -pedantic
@@ -11,16 +12,16 @@ CXXFLAGS = -std=c++1y -stdlib=libc++ -c -g -O0 -Wall -Wextra -Werror -pedantic
 LDFLAGS = -std=c++1y -stdlib=libc++ -lc++abi
 
 # Link final project
-main : ./build/AirGraph.o ./build/file_parser.o ./build/main.o ./build/graph.o 
+main : $(ALL_NON_EXE_OBJS) ./build/main.o
 	$(LD) ./build/main.o ./build/AirGraph.o ./build/graph.o ./build/file_parser.o $(LDFLAGS) -o $@
+
+# Link tests
+test: $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
+	$(LD) ./build/catchmain.o ./build/tests.o $(LDFLAGS) -o test
 
 # Compile final project
 ./build/main.o : ./main.cpp ./AirGraph/AirGraph.h ./parsing/file_parser.h
 	$(CXX) $(CXXFLAGS) $< -o $@
-
-# Link tests
-test: ./build/tests.o ./build/catchmain.o
-	$(LD) ./build/catchmain.o ./build/tests.o $(LDFLAGS) -o test
 
 # Compile tests
  ./build/tests.o : ./tests/tests.cpp ./AirGraph/AirGraph.h ./parsing/file_parser.h
@@ -42,6 +43,18 @@ test: ./build/tests.o ./build/catchmain.o
 ./build/file_parser.o : ./parsing/file_parser.cpp ./parsing/file_parser.h 
 	$(CXX) $(CXXFLAGS) $< -o $@
 
+# Compile PNG
+./build/PNG.o : ./cs225/PNG.cpp ./cs225/PNG.h ./cs225/HSLAPixel.h ./cs225/RGB_HSL.h 
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+# Compile HSLAPixel
+./build/HSLAPixel.o : ./cs225/HSLAPixel.cpp ./cs225/HSLAPixel.h
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+# Compile lodepng
+./build/lodepng.o : ./cs225/lodepng/lodepng.cpp ./cs225/lodepng/lodepng.h
+	$(CXX) $(CXXFLAGS) $< -o $@
+
 # Clean all build artifacts
 clean : 
-	rm ./build/*
+	rm -f ./build/* ./main ./test
