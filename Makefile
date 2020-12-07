@@ -58,3 +58,10 @@ test: $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
 # Clean all build artifacts
 clean : 
 	rm -f ./build/* ./main ./test
+
+# Download all datasets from OpenFlights
+datasets :
+	mkdir ./datasets &\
+	curl https://raw.githubusercontent.com/jpatokal/openflights/master/data/airlines.dat -o ./datasets/airlines.dat &\
+	curl https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat -o ./datasets/airports.dat &\
+	curl https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat -o ./datasets/routes.dat
