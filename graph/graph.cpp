@@ -161,7 +161,6 @@ bool Graph::edgeExists(Vertex source, Vertex destination) const
     return assertEdgeExists(source, destination, "");
 }
 
-//DO we really need this?? what would we call this
 Edge Graph::setEdgeLabel(Vertex source, Vertex destination, string label)
 {
     if (assertEdgeExists(source, destination, __func__) == false)

@@ -5,54 +5,80 @@
 #include <unordered_map>
 #include <iostream>
 #include <algorithm>
-
+//NEED TO INCLUDE!!!!!!!
+//1.) set and get for Vertex Label
+//2.) set and get for edge label 
+//make sure it only takes either the vertex or edge as arguement but not both
+//this implementation can't handle disjoint graphs
+//fix predeccesor/depth calculations
 using namespace std;
-void graph::BFS(const string start)
-{
-    // Mark all the vertices as not visited
-    bool *visited = new bool[numVertices];
-    for(int i = 0; i < V; i++){
-        visited[i] = false;
+void Graph::BFS(const Graph G, const Vertex start)
+{ 
+    // (initialize) Mark all the vertices as not visited
+    for(Vertex v: G.getVertices()){
+        setVertexLabel(v, "Unexplored");
     }
+    // (initialize) Mark all the edges as not visited
+    for(Edge e: G.getVertices()){
+        setEdgeLabel(e, "Unexplored");
+    }
+
     // Create a queue for BFS
     list<string> queue;
     //label the current vertex
-    string curr = start;
+    Vertex curr = start;
     // Mark the current node as visited and enqueue it
-    visited[start] = true;
-    queue.push_back(s);
-    //unordered_map<string, string> predecessor;
-    //unordered_map<string, string> depth;
+    setEdgeLabel(v, "Visited");
+    queue.push_back(curr);
 
-    // 'i' will be used to get all adjacent
-    // vertices of a vertex
-    list<int>::iterator i;
- 
-    while(!queue.empty())
-    {
+    unordered_map<Vertex, Vertex> predecessor;
+    unordered_map<Vertex, int> depth;
+
+    while(!queue.empty()){
         //store next vertex in queue to be examined
-        curr = queue.front();
+        v = queue.front();
+        //print out bfs to terminal (Is this it?)
+        cout << to_string(v) << " ";
         // Dequeue a vertex from queue
         queue.pop_front();
-        // Get all adjacent vertices of the dequeued vertex dequeued
-        for (i = adjacency_list[curr].begin(); i != adjacency_list[curr].end(); ++i){
-            //adjcent vertex hasn't been visited
-            if (!visited[*i]){
-                //add a discoverg edge
-                //discovery_edge = 
-                //update visited flag
-                visited[*i] = true;
+        // Get all adjacent vertices of the vertex under examination
+        for (Vertex w: G.getAdjacent(v)){
+            //Discovery Edge
+            if (getVertexLabel(w) == "Unexplored"){
+                //add a discovery edge labels
+                setEdgeLabel(v, w, "Discovery");
+                //update visited flag (TO VERTEX!)
+                setEdgeLabel(w, "Visited");
                 //update depth
-
+                depth[v_next] = depth[v] + 1;
                 //update predeccesor to vertex
-
+                predecessor[v_next] = v;
                 //Add the adjacent vertex to queue
                 queue.push_back(*i);
             }
-            //else adjcent vertex has been visited
-            else if (visited[*i] && ){ //cross label 
-                queue.push_back(); 
+            //Cross Edge
+            else if (getEdgeLabel(v, w) == "Unexplored"){
+                //update edge with cross edge label 
+                setEdgeLabel(v, w, "Cross")
             }
         }
     }
-}
+} 
+
+    //// Mark all the vertices as not visited
+    // bool *visited = new bool[numVertices];
+    // for(int i = 0; i < numVertices; i++){
+    //     visited[i] = false;
+    // }
+
+    // Mark the current node as visited and enqueue it
+    //visited[curr] = true;
+
+    // // 'i' will be used to get all adjacent
+    // // vertices of a vertex
+    // list<int>::iterator i;
+
+    //i = adjacency_list[curr].begin(); i != adjacency_list[curr].end(); ++i
+
+    //  //update visited flag
+    //     visited[*i] = true;
