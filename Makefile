@@ -11,20 +11,22 @@ CXXFLAGS = -std=c++1y -stdlib=libc++ -c -g -O0 -Wall -Wextra -Werror -pedantic
 # Set linker flags to standard for course
 LDFLAGS = -std=c++1y -stdlib=libc++ -lc++abi
 
+all: main
+
 # Link final project
 main : $(ALL_NON_EXE_OBJS) ./build/main.o
 	$(LD) ./build/main.o ./build/AirGraph.o ./build/graph.o ./build/file_parser.o $(LDFLAGS) -o $@
 
 # Link tests
 test: $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
-	$(LD) ./build/catchmain.o ./build/tests.o $(LDFLAGS) -o test
+	$(LD) ./build/tests.o ./build/catchmain.o $(ALL_NON_EXE_OBJS) $(LDFLAGS) -o test
 
 # Compile final project
 ./build/main.o : ./main.cpp ./AirGraph/AirGraph.h ./parsing/file_parser.h
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 # Compile tests
- ./build/tests.o : ./tests/tests.cpp ./AirGraph/AirGraph.h ./parsing/file_parser.h
+./build/tests.o : ./tests/tests.cpp ./AirGraph/AirGraph.h ./parsing/file_parser.h
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 # Compile catch test suite
