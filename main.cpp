@@ -17,18 +17,18 @@ int main(){
 
     FileParser parseRoutes("./datasets/routes.dat");
     std::vector<std::vector<string>*>* routes = parseRoutes.get_file();
-    traffic.storeAirlines(routes);
+    traffic.insertFlights(routes);
 
 
     std::cout << "Airports Parsed: " << airports->size() << std::endl;
     std::cout << "Airports Stored: " << traffic.getVertices().size() << std::endl << std::endl;
 
     std::cout << "Airlines Parsed: " << airlines->size() << std::endl;
-    std::cout << "Airlines Stored: " << traffic.getNumLines() << std::endl << std::endl;
+    std::cout << "Airlines Stored: " << traffic.getNumAirlines() << std::endl << std::endl;
+    
+    std::cout << "Flights Parsed: " << routes->size() << std::endl;
+    std::cout << "Flights Stored: " << traffic.getNumFlights() << std::endl;
+    std::cout << "Flights Invalid: " << traffic.getNumInvalidFlights() << std::endl;
 
-    std::cout << "Routes Parsed: " << routes->size() << std::endl;
-    std::cout << "Routes Stored: " << traffic.getEdges().size() << std::endl << std::endl;
-
-    std::cout<<"Wocky Slush"<<std::endl;
     return 0;
 }

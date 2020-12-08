@@ -9,7 +9,7 @@
 #include <math.h>
 #include <string>
 
-AirGraph::AirGraph() : Graph(true, true) {
+AirGraph::AirGraph() : Graph(true, true), invalid(0) {
     // Do nothing
 }
 
@@ -44,7 +44,7 @@ void AirGraph::insertAirports(std::vector<std::vector<string>*>* vec) {
         currAirport.tz = (*airportPtr)[9];
         currAirport.dst = (*airportPtr)[10];
         currAirport.tz_olson = (*airportPtr)[11];
-        currAirport.source = (*airportPtr)[12];
+        currAirport.source = (*airportPtr)[13];
 
         // Insert airport into airports dictionary
         airports.insert(std::pair<Vertex, airport>(open_id, currAirport));
@@ -82,26 +82,43 @@ void AirGraph::insertFlights(std::vector<std::vector<string>*>* vec) {
 
         // Route doesn't exist yet between vertices
         else {
+            // Get source airport iterator in map
+            auto srcIt = airports.find(currFlight.src_open_ID);
+            // Check if airport exists
+            if (srcIt == airports.end()) { 
+                // Increment number of invalid flights
+                invalid ++;
+                // Airport doesn't exist, continue to next route
+                continue;
+            }
+
+            // Get destination iterator in map
+            auto destIt = airports.find(currFlight.dest_open_ID);
+            // Check if airport exists
+            if (destIt == airports.end()) {
+                // Increment number of invalid flights
+                invalid ++;
+                // Airport doesn't exist, continue to next route
+                continue;
+            }
+
             // Calculate index of next route vector
             int index = routes.size();
 
             // Insert edge between vertices
-            insertEdge(currFlight.src_open_ID, currFlight.dest_open_ID);
+            insertEdge(srcIt->first, destIt->first);
             // Set edge weight to index of flights
-            setEdgeLabel(currFlight.src_open_ID, currFlight.dest_open_ID, std::to_string(index));
-            
-            // Retrieve source airport
-            airport src = airports[currFlight.src_open_ID];
-            // Retreive destination airport
-            airport dest = airports[currFlight.dest_open_ID];
+            setEdgeLabel(srcIt->first, destIt->first, std::to_string(index));
+
+
             // Calculate distance of edge
-            int weight = airport_dist_(src, dest);
+            int weight = airport_dist_(srcIt->second, destIt->second);
             // Set weight of edge
-            setEdgeWeight(currFlight.src_open_ID, currFlight.dest_open_ID, weight);
+            setEdgeWeight(srcIt->first, destIt->first, weight);
             
             // Create new vector for route
             std::vector<flight>* route = new std::vector<flight>();
-            // Insert vector into flight board at index
+            // Insert route vector into flight board at index
             routes.push_back(route);
             // Insert flight into route
             route->push_back(currFlight);
@@ -143,4 +160,16 @@ int AirGraph::airport_dist_ (airport airport1, airport airport2) {
 
     // Cast distance to int and return
     return (int) d;
+}
+
+int AirGraph::getNumFlights() {
+    // The number of flights in the flight board
+    int flights = 0;
+    // Loop through all routes in the flight board
+    for(std::vector<flight>* ptr : routes) {
+        // Increment the number of flights
+        flights += ptr->size();
+    }
+    // Return the number of flights
+    return flights;
 }
