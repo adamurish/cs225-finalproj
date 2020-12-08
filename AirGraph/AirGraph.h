@@ -1,5 +1,6 @@
 // Include core graph class
 #include "../graph/graph.h"
+#include <iostream>
 
 // Define airport structure
 struct airport {
@@ -96,7 +97,19 @@ class AirGraph : public Graph {
         // @param vec Vector of OpenFlight IDs of airports in order of visitation
         // @return TBD
         std::vector<flight> findLandmarkPath(std::vector<Vertex> vec);
-    
+
+        // Return the number of airlines
+        // @return Integer number of airlines
+        int getNumAirlines() { return airlines.size(); };
+
+        // Return the number of with invalid src/dest IDs
+        // @return Integer number of invalid flights
+        int getNumInvalidFlights() { return invalid; };
+
+        // Return the number of flights
+        // @return Integer number of flights
+        int getNumFlights();
+
     private:
         // Dictionary (Hash Map) to store OpenFlight_ID->airport mappings
         std::unordered_map<Vertex, airport> airports;
@@ -109,6 +122,9 @@ class AirGraph : public Graph {
 
         // Vector of vector pointers to correlate flight data to graph
         std::vector<std::vector<flight>*> routes;
+
+        // Integer containing the number of invalid flights given
+        int invalid;
 
         // Helper function to parse user airport input
         // @param input User input string of IATA code or OpenFlights id
