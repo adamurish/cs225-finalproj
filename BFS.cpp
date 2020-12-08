@@ -50,9 +50,9 @@ void Graph::BFS(const Graph G, const Vertex start)
                 //update visited flag (TO VERTEX!)
                 setEdgeLabel(w, "Visited");
                 //update depth
-                depth[v_next] = depth[v] + 1;
+                depth[w_next] = depth[w] + 1;
                 //update predeccesor to vertex
-                predecessor[v_next] = v;
+                predecessor[w_next] = w;
                 //Add the adjacent vertex to queue
                 queue.push_back(*i);
             }
@@ -65,20 +65,4 @@ void Graph::BFS(const Graph G, const Vertex start)
     }
 } 
 
-    //// Mark all the vertices as not visited
-    // bool *visited = new bool[numVertices];
-    // for(int i = 0; i < numVertices; i++){
-    //     visited[i] = false;
-    // }
-
-    // Mark the current node as visited and enqueue it
-    //visited[curr] = true;
-
-    // // 'i' will be used to get all adjacent
-    // // vertices of a vertex
-    // list<int>::iterator i;
-
-    //i = adjacency_list[curr].begin(); i != adjacency_list[curr].end(); ++i
-
-    //  //update visited flag
-    //     visited[*i] = true;
+  
