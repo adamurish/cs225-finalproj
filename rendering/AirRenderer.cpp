@@ -22,7 +22,7 @@ cs225::PNG AirRenderer::draw_airports_and_flights(const vector<airport> &airport
         //project start and end onto map, then connect them with a line
         auto start = project(std::stod(airport_map[fl.src_open_ID].latitude), std::stod(airport_map[fl.src_open_ID].longitude));
         auto end = project(std::stod(airport_map[fl.dest_open_ID].latitude), std::stod(airport_map[fl.dest_open_ID].longitude));
-        draw_line(start, end, ret, 1000);
+        draw_line(start, end, ret, 5000);
     }
     return ret;
 }
@@ -45,11 +45,13 @@ std::pair<int, int> AirRenderer::project(double latitude, double longitude) {
     //convert longitude from degrees to radians
     double longitude_radians = longitude * (M_PI / 180.0);
     //from wikipedia, X = R * (longitude - longitude of origin)
+    //longitude of origin is halfway around "circle" clockwise, I.E. -pi radians
     double x = R * (longitude_radians + M_PI);
 
     //latitude is given in degrees, have to convert it to use tan()
     double latitude_radians = latitude * (M_PI / 180.0);
     //y coord is calculated relative to origin, i.e. distance from equator
+    //from wikipedia, Y = R * ln[ tan( ( pi / 4 ) + ( latitude / 2 ) ) ]
     double y_delta = R * (log(tan((M_PI / 4.0) + (latitude_radians / 2.0))));
     //normalize y for use in PNG, equator is the center of the image
     double y = ((double) height / 2.0) - y_delta;
