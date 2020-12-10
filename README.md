@@ -1,2 +1,2 @@
-# sdm6-jasonz3-adamwu2
-Final Project
+# CS 225 Final Project
+**Team Members: Armando Rodea, Adam Urish, Sebastian Moruszewicz, Jason Zou**
