@@ -10,9 +10,10 @@
 
 using namespace std;
 
-list<string> Graph::shortestPath(const Vertex start) {
+list<string> Graph::shortestPath(const Graph G, const Vertex start) {
     // Create a vector for distances and initialize all to infinity
-    vector<int> dist(V, INF); 
+    vector<int> dist(V, INF);
+    vector<Vertex> p(V, NULL); 
     //set source distance to zero
     dist[start] = 0;
     //Goes through the vertices in the graph 
@@ -23,7 +24,7 @@ list<string> Graph::shortestPath(const Vertex start) {
     }   
     //creates the priority queue to store vertices and their weights
     priority_queue<weight, Vertex> pqueue;
-    pqueue.buildHeap(g.getVertices())
+    pqueue.buildHeap(G.getVertices())
     //*this varies depending on what you want to return*
     //Creates a graph to..
     Graph T;
@@ -34,42 +35,15 @@ list<string> Graph::shortestPath(const Vertex start) {
     Vertex u = pqueue.top().second;
     T.add(u);
         //cost(u,v) is the weight from the current vertex to the next vertex
-        for(Vertex v : neighbors of u not in T){
-            if(dist[u]+ cost(u,v)<dist[v]){
-                dist[v] = dist[u] + cost(u,v);
+        bool isNeighbor = false;
+        //for(Vertex v : neighbors of u not in T
+        for(auto u : u.getAdjacent()){
+            int weight = u.getEdgeWeight();
+            if(dist[u]+ weight <dist[v]){
+                dist[v] = dist[u] + weight;
                 p[v] = u;
             }
         }
     }
-    //**BFS code****
-    // while(!queue.empty()){
-    //     //store next vertex in queue to be examined
-    //     v = queue.front();
-    //     //print out bfs to terminal (Is this it?)
-    //     cout << to_string(v) << " ";
-    //     // Dequeue a vertex from queue
-    //     queue.pop_front();
-    //     // Get all adjacent vertices of the vertex under examination
-    //     for (Vertex w: G.getAdjacent(v)){
-    //         //Discovery Edge
-    //         if (getVertexLabel(w) == "Unexplored"){
-    //             //add a discovery edge labels
-    //             setEdgeLabel(v, w, "Discovery");
-    //             //update visited flag (TO VERTEX!)
-    //             setEdgeLabel(w, "Visited");
-    //             //update depth
-    //             depth[w_next] = depth[w] + 1;
-    //             //update predeccesor to vertex
-    //             predecessor[w_next] = w;
-    //             //Add the adjacent vertex to queue
-    //             queue.push_back(*i);
-    //         }
-    //         //Cross Edge
-    //         else if (getEdgeLabel(v, w) == "Unexplored"){
-    //             //update edge with cross edge label 
-    //             setEdgeLabel(v, w, "Cross")
-    //         }
-    //     }
-    // }
-
+ 
 }

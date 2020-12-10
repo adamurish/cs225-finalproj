@@ -24,24 +24,24 @@ void Graph::BFS(const Graph G, const Vertex start)
     }
 
     // Create a queue for BFS
-    list<string> queue;
+    queue<string> q;
     //label the current vertex
     Vertex curr = start;
     // Mark the current node as visited and enqueue it
     setEdgeLabel(v, "Visited");
-    queue.push_back(curr);
+    q.push_back(curr);
 
     unordered_map<Vertex, Vertex> predecessor;
     //unordered_map<Vertex, int> depth;
     //vector<int> depth(V, 0); 
 
-    while(!queue.empty()){
+    while(!q.empty()){
         //store next vertex in queue to be examined
-        v = queue.front();
+        v = q.front();
         //print out bfs to terminal (Is this it?)
         cout << to_string(v) << " ";
         // Dequeue a vertex from queue
-        queue.pop_front();
+        q.pop_front();
         // Get all adjacent vertices of the vertex under examination
         for (Vertex w: G.getAdjacent(v)){
             //Discovery Edge
@@ -55,7 +55,7 @@ void Graph::BFS(const Graph G, const Vertex start)
                 //update predeccesor to vertex
                 predecessor[w_next] = w;
                 //Add the adjacent vertex to queue
-                queue.push_back(*i);
+                q.push_back(*i);
             }
             //Cross Edge
             else if (getEdgeLabel(v, w) == "Unexplored"){
