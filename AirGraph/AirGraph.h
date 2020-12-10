@@ -1,7 +1,7 @@
 // Include core graph class
 #pragma once
+
 #include "../graph/graph.h"
-#include <iostream>
 #include "../cs225/PNG.h"
 
 // Define airport structure
@@ -141,4 +141,10 @@ class AirGraph : public Graph {
         // @param airport2 refernece to second airport
         // @return Distance between airports as integer
         int airport_dist_ (airport airport1, airport airport2);
+
+        // Helper function that gerenates a BFS traversal of the AirGraph from a given vertex.
+        // Does not run against disconnected components not containing the starting airport
+        // @param airport airport vertex from which to start BFS
+        // @return TBD
+        std::vector<string> AirGraph::BFS(const Vertex airport);
 };

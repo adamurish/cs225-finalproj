@@ -1,69 +1,71 @@
-#include "graph.h"
 #include <queue>
-#include <string>
-#include <list>
-#include <unordered_map>
-#include <iostream>
-#include <algorithm>
+
+#include "./AirGraph/AirGraph.h"
+
 //NEED TO INCLUDE!!!!!!!
-//1.) set and get for Vertex Label
-//2.) set and get for edge label 
-//make sure it only takes either the vertex or edge as arguement but not both
 //this implementation can't handle disjoint graphs
 //fix predeccesor/depth calculations
-using namespace std;
-void Graph::BFS(const Graph G, const Vertex start)
-{ 
-    // (initialize) Mark all the vertices as not visited
-    for(Vertex v: G.getVertices()){
-        setVertexLabel(v, "Unexplored");
+
+std::vector<string> AirGraph::BFS(const Vertex airport) {
+    // Unordered map correlating vertex labels to exploration state
+    // false: Unexplored, true: Explored
+    std::unordered_map<Vertex, bool> explored_v;
+
+    // Unordered map correlating edges labels to exploration state
+    // false: cross, true: discovery
+    std::unordered_map<string, bool> discovery_e;
+
+    // Vector containing order of traversal
+    std::vector<string> traversal;
+
+    // (initialize) Mark all the vertices as unexplored
+    for(Vertex v: getVertices()) {
+        // Insert vertex pair into exploration map
+        explored_v[v] = false;
     }
-    // (initialize) Mark all the edges as not visited
-    for(Edge e: G.getVertices()){
-        setEdgeLabel(e, "Unexplored");
+    // (initialize) Mark all the edges as unexplored
+    for(Edge e: getEdges()) {
+        // Insert edge pair into exploration map
+        discovery_e[e.getLabel()] = false;
     }
 
     // Create a queue for BFS
-    queue<string> q;
-    //label the current vertex
-    Vertex curr = start;
-    // Mark the current node as visited and enqueue it
-    setEdgeLabel(v, "Visited");
-    q.push_back(curr);
+    std::queue<string> q;
 
-    unordered_map<Vertex, Vertex> predecessor;
-    //unordered_map<Vertex, int> depth;
-    //vector<int> depth(V, 0); 
+    // Rename the starting airport for clarity
+    Vertex curr = airport;
+    
+    // Mark the current vertex as explored
+    explored_v[curr] = true;
+    
+    // Push the current vertex into the queue
+    q.push(curr);
 
+    // Repeat until all vertices have been visited (within connected component)
     while(!q.empty()){
-        //store next vertex in queue to be examined
-        v = q.front();
-        //print out bfs to terminal (Is this it?)
-        cout << to_string(v) << " ";
-        // Dequeue a vertex from queue
-        q.pop_front();
+        // Dequeue and store next vertex
+        Vertex v = q.front();
+        q.pop();
         // Get all adjacent vertices of the vertex under examination
-        for (Vertex w: G.getAdjacent(v)){
-            //Discovery Edge
-            if (getVertexLabel(w) == "Unexplored"){
-                //add a discovery edge labels
-                setEdgeLabel(v, w, "Discovery");
-                //update visited flag (TO VERTEX!)
-                setEdgeLabel(w, "Visited");
-                //update depth
-                depth[w_next] = depth[w] + 1;
-                //update predeccesor to vertex
-                predecessor[w_next] = w;
-                //Add the adjacent vertex to queue
-                q.push_back(*i);
+        for (Vertex w: getAdjacent(v)) {
+            // Check if new vertex discovered
+            if (!explored_v[w]) {
+                // Label edge as explored edge (dicovery is unneeded)
+                discovery_e[getEdgeLabel(v, w)] = true;
+                // Label vertex as explored
+                explored_v[w] = true;
+                // Add the adjacent vertex to queue
+                q.push(w);
             }
             //Cross Edge
-            else if (getEdgeLabel(v, w) == "Unexplored"){
-                //update edge with cross edge label 
-                setEdgeLabel(v, w, "Cross")
+            //else if (!discovery_e[getEdgeLabel(v, w)]){ //getEdgeLabel(v, w) == "Unexplored"
+            //    //update edge with cross edge label
+            //    discovery_e[getEdgeLabel(v, w)] = true; //setEdgeLabel(v, w, "Cross")
             }
         }
     }
+    //returns a vector of edges
+    return traversal;
 } 
 
   
