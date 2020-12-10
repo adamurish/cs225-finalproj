@@ -32,7 +32,8 @@ void Graph::BFS(const Graph G, const Vertex start)
     queue.push_back(curr);
 
     unordered_map<Vertex, Vertex> predecessor;
-    unordered_map<Vertex, int> depth;
+    //unordered_map<Vertex, int> depth;
+    //vector<int> depth(V, 0); 
 
     while(!queue.empty()){
         //store next vertex in queue to be examined
