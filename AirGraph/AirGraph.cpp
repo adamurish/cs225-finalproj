@@ -181,10 +181,13 @@ cs225::PNG AirGraph::render() {
     AirRenderer ar(base, airports);
     std::vector<double> radii;
     std::vector<airport> airport_vec;
-    //DOING FIRST 10 AIRPORTS FOR TESTING
-    for(unsigned i = 0; i < 10; ++i){
-        radii.push_back(1.0);
-        airport_vec.push_back(airports[getVertices()[i]]);
+    std::vector<flight> flight_vec;
+    for(const Vertex& v : getVertices()){
+        radii.push_back(2.0);
+        airport_vec.push_back(airports[v]);
     }
-    return ar.draw_airports(airport_vec, radii);
+    for(auto route : routes){
+        flight_vec.push_back(route->at(0));
+    }
+    return ar.draw_airports_and_flights(airport_vec, radii, flight_vec);
 }
