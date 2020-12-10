@@ -112,6 +112,7 @@ class AirGraph : public Graph {
         // @return Integer number of flights
         int getNumFlights();
 
+        //Return a render of the airports and flights on a world map
         cs225::PNG render();
 
     private:
