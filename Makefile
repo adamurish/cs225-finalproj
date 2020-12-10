@@ -3,7 +3,7 @@ CXX = clang++
 # Set linker to clang++
 LD = clang++
 
-ALL_NON_EXE_OBJS = ./build/AirGraph.o ./build/file_parser.o ./build/graph.o ./build/PNG.o ./build/HSLAPixel.o ./build/lodepng.o
+ALL_NON_EXE_OBJS = ./build/AirGraph.o ./build/file_parser.o ./build/graph.o ./build/PNG.o ./build/HSLAPixel.o ./build/lodepng.o ./build/AirRenderer.o
 
 
 # Set compiler flags to standard for course
@@ -15,7 +15,7 @@ all: main
 
 # Link final project
 main : $(ALL_NON_EXE_OBJS) ./build/main.o
-	$(LD) ./build/main.o ./build/AirGraph.o ./build/graph.o ./build/file_parser.o $(LDFLAGS) -o $@
+	$(LD) ./build/main.o $(ALL_NON_EXE_OBJS) $(LDFLAGS) -o $@
 
 # Link tests
 test: $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
@@ -43,6 +43,9 @@ test: $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
 
 # Compile file_parser
 ./build/file_parser.o : ./parsing/file_parser.cpp ./parsing/file_parser.h 
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+./build/AirRenderer.o : ./rendering/AirRenderer.cpp ./rendering/AirRenderer.h
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 # Compile PNG

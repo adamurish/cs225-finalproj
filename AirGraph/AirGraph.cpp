@@ -5,6 +5,7 @@
 
 // Include AirGraph Header
 #include "./AirGraph.h"
+#include "../rendering/AirRenderer.h"
 // Include cmath library for trig functions
 #include <math.h>
 #include <string>
@@ -172,4 +173,18 @@ int AirGraph::getNumFlights() {
     }
     // Return the number of flights
     return flights;
+}
+
+cs225::PNG AirGraph::render() {
+    cs225::PNG base;
+    base.readFromFile("mercator.png");
+    AirRenderer ar(base, airports);
+    std::vector<double> radii;
+    std::vector<airport> airport_vec;
+    //DOING FIRST 10 AIRPORTS FOR TESTING
+    for(unsigned i = 0; i < 10; ++i){
+        radii.push_back(1.0);
+        airport_vec.push_back(airports[getVertices()[i]]);
+    }
+    return ar.draw_airports(airport_vec, radii);
 }

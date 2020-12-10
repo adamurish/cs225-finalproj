@@ -30,5 +30,7 @@ int main(){
     std::cout << "Flights Stored: " << traffic.getNumFlights() << std::endl;
     std::cout << "Flights Invalid: " << traffic.getNumInvalidFlights() << std::endl;
 
+    traffic.render().writeToFile("render.png");
+
     return 0;
 }

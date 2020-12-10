@@ -1,6 +1,8 @@
 // Include core graph class
+#pragma once
 #include "../graph/graph.h"
 #include <iostream>
+#include "../cs225/PNG.h"
 
 // Define airport structure
 struct airport {
@@ -109,6 +111,8 @@ class AirGraph : public Graph {
         // Return the number of flights
         // @return Integer number of flights
         int getNumFlights();
+
+        cs225::PNG render();
 
     private:
         // Dictionary (Hash Map) to store OpenFlight_ID->airport mappings
