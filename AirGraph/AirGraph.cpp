@@ -175,7 +175,7 @@ int AirGraph::getNumFlights() {
     return flights;
 }
 
-cs225::PNG AirGraph::render() {
+cs225::PNG AirGraph::render(bool draw_airports, bool draw_flights) {
     //setup base map
     cs225::PNG base;
     base.readFromFile("mercator4.png");
@@ -188,16 +188,20 @@ cs225::PNG AirGraph::render() {
     std::vector<airport> airport_vec;
     std::vector<flight> flight_vec;
 
-    for(const Vertex& v : getVertices()){
-        //each circle has raidus 2
-        radii.push_back(2.0);
-        //include every airport in the graph
-        airport_vec.push_back(airports[v]);
+    if(draw_airports) {
+        for (const Vertex &v : getVertices()) {
+            //each circle has raidus 2
+            radii.push_back(2.0);
+            //include every airport in the graph
+            airport_vec.push_back(airports[v]);
+        }
     }
 
-    for(auto route : routes){
-        //include the first flight of every route, since rest are duplicates
-        flight_vec.push_back(route->at(0));
+    if(draw_flights) {
+        for (auto route : routes) {
+            //include the first flight of every route, since rest are duplicates
+            flight_vec.push_back(route->at(0));
+        }
     }
     //return the output of the render
     return ar.draw_airports_and_flights(airport_vec, radii, flight_vec);

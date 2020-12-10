@@ -113,7 +113,9 @@ class AirGraph : public Graph {
         int getNumFlights();
 
         //Return a render of the airports and flights on a world map
-        cs225::PNG render();
+        // @param draw_airports Set if airports should be drawn
+        // @param draw_flights Set if flights should be drawn
+        cs225::PNG render(bool draw_airports, bool draw_flights);
 
     private:
         // Dictionary (Hash Map) to store OpenFlight_ID->airport mappings
