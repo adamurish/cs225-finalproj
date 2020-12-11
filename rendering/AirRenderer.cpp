@@ -21,7 +21,7 @@ cs225::PNG AirRenderer::draw_airports_and_flights(const vector<airport> &airport
     for(const airport& ap : airports){
         //project airport onto map and then draw a circle at its location
         auto center = project(std::stod(ap.latitude), std::stod(ap.longitude));
-        draw_circle(center, radii[i], ret, 5000);
+        draw_circle(center, radii[i], ret);
         i++;
     }
     for(const flight& fl : flights){
@@ -66,17 +66,33 @@ std::pair<int, int> AirRenderer::project(double latitude, double longitude) {
     return {lrint(x), lrint(y)};
 }
 
-void AirRenderer::draw_circle(std::pair<int, int> center, double radius, cs225::PNG& image, int discrete_blocks){
-    //discrete_blocks is how many discrete lines to draw, can tweak for efficiency
+void AirRenderer::draw_circle(std::pair<int, int> center, double radius, cs225::PNG& image){
+    //old code, new stuff is more efficient, saves ~3.5 seconds rendering all airports
+//    int discrete_blocks = 5000;
+//    //rotate all the way around circle
+//    double discrete_delta = (2 * M_PI) / (double) discrete_blocks;
+//    for(int t = 0; t < discrete_blocks + 1; ++t){
+//        //calculate coords from radius and sin/cos
+//        int x = lrint(center.first + (radius * cos(discrete_delta * t)));
+//        int y = lrint(center.second + (radius * sin(discrete_delta * t)));
+//        //draw line from center to edge of circle
+//        draw_line(center, {x, y}, image, ceil(radius));
+//    }
 
-    //rotate all the way around circle
-    double discrete_delta = (2 * M_PI) / (double) discrete_blocks;
-    for(int t = 0; t < discrete_blocks + 1; ++t){
-        //calculate coords from radius and sin/cos
-        int x = lrint(center.first + (radius * cos(discrete_delta * t)));
-        int y = lrint(center.second + (radius * sin(discrete_delta * t)));
-        //draw line from center to edge of circle
-        draw_line(center, {x, y}, image, ceil(radius));
+    //circumscribe circle in a square with side length 2 * r
+    int x_lower_bound = std::max(0, center.first - (int) radius);
+    int x_upper_bound = std::min(center.first + (int) radius, (int) image.width() - 1);
+    int y_lower_bound = std::max(0, center.second - (int) radius);
+    int y_upper_bound = std::min(center.second + (int) radius, (int) image.height() - 1);;
+    for(int x = x_lower_bound; x <= x_upper_bound; ++x){
+        for(int y = y_lower_bound; y <= y_upper_bound; ++y){
+            if(pow(x - center.first, 2) + pow(y - center.second, 2) <= pow(radius, 2)){
+                auto &pix = image.getPixel(x, y);
+                pix.h = 0;
+                pix.s = 1.0;
+                pix.l = 0.5;
+            }
+        }
     }
 }
 

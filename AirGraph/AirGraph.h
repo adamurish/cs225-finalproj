@@ -140,10 +140,11 @@ class AirGraph : public Graph {
         // @param draw_flights Set if flights should be drawn
         cs225::PNG render(bool draw_airports, bool draw_flights);
 
-        //Render a subset of airports in graph
-        cs225::PNG renderAirportRank(std::vector<Vertex> subset);
+        //Render airport rank of all airports in graph
+        cs225::PNG renderAirportRank();
 
-        //Render a shortest path
+        //Render corresponding algorithms
+
         cs225::PNG renderShortestPath(Vertex start, Vertex end);
 
         cs225::PNG renderLandmarkPath(std::vector<Vertex> vec);

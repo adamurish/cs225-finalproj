@@ -15,7 +15,7 @@ all: main
 
 # Link final project
 main : $(ALL_NON_EXE_OBJS) ./build/main.o
-	$(LD) ./build/main.o $(ALL_NON_EXE_OBJS) $(LDFLAGS) -o $@
+	$(LD) ./build/main.o $(ALL_NON_EXE_OBJS) $(LDFLAGS) -o traffic
 
 # Link tests
 test: $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
@@ -38,7 +38,7 @@ test: $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 # Compile BFS
-./build/BFS.o : ./BFS.cpp ./AirGraph/AirGraph.h
+./build/BFS.o : ./algorithms/BFS.cpp ./AirGraph/AirGraph.h
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 # Compile Graph (required by AirGraph)
