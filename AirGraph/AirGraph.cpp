@@ -283,7 +283,7 @@ cs225::PNG AirGraph::renderBFS(Vertex start) {
     AirRenderer ar(base, airports);
 
     //get landmark path
-    auto path = BFS(start);
+    auto path = BFS_Order(start);
     std::vector<airport> airport_vec;
     std::vector<double> radii;
     airport_vec.push_back(airports[start]);

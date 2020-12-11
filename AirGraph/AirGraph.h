@@ -92,19 +92,21 @@ class AirGraph : public Graph {
         // Helper function that gerenates a BFS traversal of the AirGraph from a given vertex.
         // Does not run against disconnected components not containing the starting airport
         // @param airport airport vertex from which to start BFS
-        // @return TBD
-        std::vector<flight> BFS(const Vertex start);
+        // @return Unoredered map of prdecessors
+        std::unordered_map<Vertex,Vertex> BFS(const Vertex start);
+
+        std::vector<flight> AirGraph::BFS_Order(const Vertex start);
 
         // ALL ALGOS WILL IMPLEMENT THIS INTERFACE
         // Djikstra's algorithm for Single Source Shortest Path
         // @param source Vertex key (OpenFlights ID) of requested source airport
         // @return Vector of airports Vertexes defining path
-        std::unordered_map<Vertex, Vertex> AirGraph::Djikstra(const Vertex source);
+        std::unordered_map<Vertex, Vertex> Djikstra(const Vertex source);
         
         // function that returns the shortest path given a start and end vertex 
         // @param source Vertex key (OpenFlights ID) of requested source airport
         // @return Vector of airports Vertexes defining path
-        std::vector<Vertex> AirGraph::shortestPath(const Vertex start, const Vertex end);
+        std::vector<Vertex> shortestPath(const Vertex start, const Vertex end, std::unordered_map<Vertex, Vertex> predecessor);
         
         // Find shortest landmark path
         // @param vec Vector of OpenFlight IDs of airports in order of visitation
@@ -176,7 +178,7 @@ class AirGraph : public Graph {
         int airport_dist_ (airport airport1, airport airport2);
 
         // Internal helper to BFS iterations
-        void BFS(std::unordered_map<Vertex, bool>& explored_verts, std::vector<flight>& traversal, Vertex curr);
+        void AirGraph::BFS(std::unordered_map<Vertex, bool>& explored_verts, std::unordered_map<Vertex,Vertex>& traversal, std::vector<flight>& traversal_path, Vertex curr);
 
         // Helper function for AirportRank to multiply matrix by a vector
         std::vector<double> multiply_matrix_(std::vector<std::vector<double>> matrix, std::vector<double> vector);

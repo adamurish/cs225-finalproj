@@ -2,13 +2,16 @@
 
 #include "./AirGraph/AirGraph.h"
 
-std::vector<flight> AirGraph::BFS(const Vertex start) {
+std::unordered_map<Vertex,Vertex> AirGraph::BFS(const Vertex start) {
     // Unordered map correlating vertex labels to exploration state
     // false: Unexplored, true: Explored
     std::unordered_map<Vertex, bool> explored_v;
 
     // Vector containing order of traversal
-    std::vector<flight> traversal;
+    std::unordered_map<Vertex,Vertex> traversal;
+
+    // Vector containing order of traversal
+    std::vector<flight> traversal_path;
 
     // (initialize) Mark all the vertices as unexplored
     for(Vertex v: getVertices()) {
@@ -17,21 +20,53 @@ std::vector<flight> AirGraph::BFS(const Vertex start) {
     }
 
     // Run BFS initially on start vertex
-    BFS(explored_v, traversal, start);
+    BFS(explored_v, traversal, traversal_path, start);
 
     // Loop through all vertices in order to traverse disconnected components
     for (Vertex curr : getVertices()) {
         // Only rerun BFS on vertex if not already discovered
         if (!explored_v[curr]) {
             // Run BFS on current vertex
-            BFS(explored_v, traversal, curr);
+            BFS(explored_v, traversal, traversal_path, curr);
         }
     }
     // Return vector containing routes traverses via exemplar first flight in route
     return traversal;
 }
+
+std::vector<flight> AirGraph::BFS_Order(const Vertex start) {
+    // Unordered map correlating vertex labels to exploration state
+    // false: Unexplored, true: Explored
+    std::unordered_map<Vertex, bool> explored_v;
+
+    // Vector containing order of traversal
+    std::unordered_map<Vertex,Vertex> traversal;
+
+    // Vector containing order of traversal
+    std::vector<flight> traversal_path;
+
+    // (initialize) Mark all the vertices as unexplored
+    for(Vertex v: getVertices()) {
+        // Insert vertex pair into exploration map
+        explored_v[v] = false;
+    }
+
+    // Run BFS initially on start vertex
+    BFS(explored_v, traversal, traversal_path, start);
+
+    // Loop through all vertices in order to traverse disconnected components
+    for (Vertex curr : getVertices()) {
+        // Only rerun BFS on vertex if not already discovered
+        if (!explored_v[curr]) {
+            // Run BFS on current vertex
+            BFS(explored_v, traversal, traversal_path, curr);
+        }
+    }
+    // Return vector containing routes traverses via exemplar first flight in route
+    return traversal_path;
+}
     
-void AirGraph::BFS(std::unordered_map<Vertex, bool>& explored_verts, std::vector<flight>& traversal, Vertex curr) {
+void AirGraph::BFS(std::unordered_map<Vertex, bool>& explored_verts, std::unordered_map<Vertex,Vertex>& traversal, std::vector<flight>& traversal_path, Vertex curr) {
     // Create a queue for BFS
     std::queue<string> q;
     
@@ -54,8 +89,10 @@ void AirGraph::BFS(std::unordered_map<Vertex, bool>& explored_verts, std::vector
                 explored_verts[w] = true;
                 // Add the adjacent vertex to queue
                 q.push(w);
+                // Add current node to predecesor list of neighbor
+                traversal[w] = v;
                 // Add the first flight in route to the traversal vector
-                traversal.push_back(routes[std::stoi(getEdgeLabel(v,w))]->at(0));
+                traversal_path.push_back(routes[std::stoi(getEdgeLabel(v,w))]->at(0));
             }
         }
     }
