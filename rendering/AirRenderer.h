@@ -34,7 +34,7 @@ private:
     // @param radius The radius of the circle
     // @param image The reference to the image to draw on
     // @param discrete_blocks How many lines to draw to form circle, smaller circle needs less
-    void draw_circle(std::pair<int, int> center, double radius, cs225::PNG& image, int discrete_blocks);
+    void draw_circle(std::pair<int, int> center, double radius, cs225::PNG& image);
 
     // Draw line on given image
     // @param start The start point

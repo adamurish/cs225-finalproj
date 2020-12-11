@@ -207,9 +207,9 @@ cs225::PNG AirGraph::render(bool draw_airports, bool draw_flights) {
     return ar.draw_airports_and_flights(airport_vec, radii, flight_vec);
 }
 
-cs225::PNG AirGraph::renderAirportRank(std::vector<Vertex> subset){
+cs225::PNG AirGraph::renderAirportRank(){
     //get weights from airport rank
-    auto weights = airportRank(subset);
+    auto weights = airportRank(getVertices());
     //setup base map
     cs225::PNG base;
     base.readFromFile("mercator4.png");
@@ -221,7 +221,7 @@ cs225::PNG AirGraph::renderAirportRank(std::vector<Vertex> subset){
     auto radii = std::vector<double>();
     //setup airports from corresponding vertices
     auto airport_vec = std::vector<airport>();
-    for(const Vertex& v: subset){
+    for(const Vertex& v: getVertices()){
         radii.push_back(weights[v] * 5000.0);
         airport_vec.push_back(airports[v]);
     }

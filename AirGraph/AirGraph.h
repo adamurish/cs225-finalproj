@@ -99,12 +99,12 @@ class AirGraph : public Graph {
         // Djikstra's algorithm for Single Source Shortest Path
         // @param source Vertex key (OpenFlights ID) of requested source airport
         // @return Vector of airports Vertexes defining path
-        std::unordered_map<Vertex, Vertex> AirGraph::Djikstra(const Vertex source);
+        std::unordered_map<Vertex, Vertex> Djikstra(const Vertex source);
         
         // function that returns the shortest path given a start and end vertex 
         // @param source Vertex key (OpenFlights ID) of requested source airport
         // @return Vector of airports Vertexes defining path
-        std::vector<Vertex> AirGraph::shortestPath(const Vertex start, const Vertex end);
+        std::vector<Vertex> shortestPath(const Vertex start, const Vertex end);
         
         // Find shortest landmark path
         // @param vec Vector of OpenFlight IDs of airports in order of visitation
@@ -138,10 +138,11 @@ class AirGraph : public Graph {
         // @param draw_flights Set if flights should be drawn
         cs225::PNG render(bool draw_airports, bool draw_flights);
 
-        //Render a subset of airports in graph
-        cs225::PNG renderAirportRank(std::vector<Vertex> subset);
+        //Render airport rank of all airports in graph
+        cs225::PNG renderAirportRank();
 
-        //Render a shortest path
+        //Render corresponding algorithms
+
         cs225::PNG renderShortestPath(Vertex start, Vertex end);
 
         cs225::PNG renderLandmarkPath(std::vector<Vertex> vec);

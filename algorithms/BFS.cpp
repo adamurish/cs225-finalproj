@@ -1,6 +1,6 @@
 #include <queue>
 
-#include "./AirGraph/AirGraph.h"
+#include "../AirGraph/AirGraph.h"
 
 std::vector<flight> AirGraph::BFS(const Vertex start) {
     // Unordered map correlating vertex labels to exploration state
