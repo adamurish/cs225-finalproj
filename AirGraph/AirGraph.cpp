@@ -286,12 +286,12 @@ cs225::PNG AirGraph::renderBFS(Vertex start) {
     auto path = BFS(start);
     std::vector<airport> airport_vec;
     std::vector<double> radii;
+    airport_vec.push_back(airports[start]);
+    radii.push_back(5.0);
     for(const flight& f : path){
-        airport_vec.push_back(airports[f.src_open_ID]);
+        airport_vec.push_back(airports[f.dest_open_ID]);
         radii.push_back(5.0);
     }
-    airport_vec.push_back(airports[path.back().dest_open_ID]);
-    radii.push_back(5.0);
 
     return ar.draw_airports_and_flights(airport_vec, radii, path);
 }
