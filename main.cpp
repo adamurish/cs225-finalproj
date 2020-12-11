@@ -9,8 +9,6 @@ int print_help(){
     std::cout << "OPERATIONS:" << std::endl;
     std::cout << "sssp : calculates single source shortest path using Djikstra's algorithm" << std::endl;
     std::cout << "\t-- Requires two additional arguments, the start and endpoint for the path, given as airport IATA codes" << std::endl;
-    std::cout << "landmark : Calculates a landmark path, a shortest path between multiple vertices" << std::endl;
-    std::cout << "\t-- Requires multiple additional arguments for the stops on the path, given as airport IATA codes" << std::endl;
     std::cout << "airportrank : Uses a modified version of Google's PageRank to calculate airport importance" << std::endl;
     std::cout << "bfs : Traverses the airport graph using breadth first search" << std::endl;
     std::cout << "\t-- Requires one additional argument, the starting point of traversal, given as airport IATA code" << std::endl;
@@ -19,6 +17,10 @@ int print_help(){
     return 0;
 }
 
+int fail(string reason){
+    std::cout << "Program has failed, reason: " << reason << std::endl;
+    return 1;
+}
 int main(int argc, char* argv[]){
     AirGraph traffic;
 
@@ -29,7 +31,7 @@ int main(int argc, char* argv[]){
         return print_help();
 
     if(argc < 4){  //Require 4 arguments
-        std::cout<<"This program requires at least 3 command line arguments: A path to the airport dataset (airports.dat), a path to the route dataset (routes.dat), and an operation to run (one of [sssp, landmark, airportrank, bfs, render])"<<std::endl;
+        std::cout<<"This program requires at least 3 command line arguments: A path to the airport dataset (airports.dat), a path to the route dataset (routes.dat), and an operation to run (one of [sssp, airportrank, bfs, render])"<<std::endl;
         std::cout << "Run './traffic help' for more information" << std::endl;
         return 1;
     }
@@ -67,23 +69,9 @@ int main(int argc, char* argv[]){
         string id = traffic.getAirportID(argv[4]);
         string id2 = traffic.getAirportID(argv[5]);
         if(id == "-1" || id2 == "-1"){
-            std::cout << "Invalid airport IATA code" << std::endl;
-            return 1;
+            return fail("SSSP: Invalid airport IATA code");
         }
         image = traffic.renderShortestPath(id, id2);
-    }
-    else if (operation == "landmark" && argc >= 6) {
-        std::vector<string> stops;
-        for(int i = 4; i < argc; ++i){
-            if(traffic.getAirportID(argv[i]) != "-1") {
-                stops.push_back(traffic.getAirportID(argv[i]));
-            }
-            else{
-                std::cout << "Invalid airport IATA code" << std::endl;
-                return 1;
-            }
-        }
-        image = traffic.renderLandmarkPath(stops);
     }
     else if (operation == "airportrank") {
         image = traffic.renderAirportRank();
@@ -91,8 +79,7 @@ int main(int argc, char* argv[]){
     else if (operation == "bfs" && argc == 5) {
         string id = traffic.getAirportID(argv[4]);
         if(id == "-1"){
-            std::cout << "Invalid airport IATA code" << std::endl;
-            return 1;
+            return fail("BFS: Invalid airport IATA code");
         }
         image = traffic.renderBFS(id);
     }
@@ -100,18 +87,15 @@ int main(int argc, char* argv[]){
         if(string(argv[4]) == "airports") image = traffic.render(true, false);
         if(string(argv[4]) == "routes") image = traffic.render(false, true);
         if(string(argv[4]) == "all") image = traffic.render(true, true);
-        else std::cout << "Invalid operation" << std::endl;
+        else return fail("RENDER: Invalid operation");
     }
     else {
-        std::cout << "Invalid operation or missing arguments" << std::endl;
+        return fail("Invalid operation or missing arguments");
     }
 
     std::cout << "Saving result to output.png" << std::endl;
 
     image.writeToFile("./output.png");
-
-    // I don't know if you want to keep this
-    //traffic.render().writeToFile("render.png");
 
     return 0;
 }
