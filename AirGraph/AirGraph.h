@@ -71,11 +71,13 @@ struct flight {
 // Class to represent graph of air traffic
 class AirGraph : public Graph {
     public:
+        // Airgraph construction and initialization
+
         // Default AirGraph constructor
-        AirGraph(); // Implemented
+        AirGraph();
 
         // Airgraph destructor
-        ~AirGraph(); // Implemented
+        ~AirGraph();
         
         // Insert airports into graph from vector of vectors
         // @param vec Pointer to vector contiaing airport vector pointers
@@ -89,29 +91,8 @@ class AirGraph : public Graph {
         // @param vec Pointer to vector contiaing airlines vector pointers
         void storeAirlines(std::vector<std::vector<string>*>* vec); // Implemented
 
-        // Helper function that gerenates a BFS traversal of the AirGraph from a given vertex.
-        // Does not run against disconnected components not containing the starting airport
-        // @param airport airport vertex from which to start BFS
-        // @return Unoredered map of prdecessors
-        std::unordered_map<Vertex,Vertex> BFS(const Vertex start);
 
-        std::vector<flight> BFS_Order(const Vertex start);
-
-        // ALL ALGOS WILL IMPLEMENT THIS INTERFACE
-        // Djikstra's algorithm for Single Source Shortest Path
-        // @param source Vertex key (OpenFlights ID) of requested source airport
-        // @return Vector of airports Vertexes defining path
-        std::unordered_map<Vertex, Vertex> Djikstra(const Vertex source);
-        
-        // function that returns the shortest path given a start and end vertex 
-        // @param source Vertex key (OpenFlights ID) of requested source airport
-        // @return Vector of airports Vertexes defining path
-        std::vector<Vertex> shortestPath(const Vertex start, const Vertex end, std::unordered_map<Vertex, Vertex> predecessor);
-
-        // Modified PageRank to determine relative importance of Airports
-        // @param vertices A vector of which vertices to rank
-        // @return Unordered map connecting vertices to their relative importance
-        std::unordered_map<Vertex, double> airportRank(std::vector<Vertex> vertices);
+        // AirGraph metrics and status
 
         // Return the number of airlines
         // @return Integer number of airlines
@@ -125,28 +106,66 @@ class AirGraph : public Graph {
         // @return Integer number of flights
         int getNumFlights();
 
+        // Common AirGraph queries
+
         // Return the OpenFlights ID of an airport given it's IATA
         // @param airport String containing the IATA of the target airport
         // @return String containing the OpenFlights ID of the requested airport ("-1" if not found)
         std::string getAirportID(std::string airport);
+        
+        // function that returns the shortest path given a start and end vertex 
+        // @param source Vertex key (OpenFlights ID) of requested source airport
+        // @return Vector of airports Vertexes defining path
+        std::vector<Vertex> shortestPath(const Vertex start, const Vertex end, std::unordered_map<Vertex, Vertex> predecessor);
+
+        // Algorithms
+
+        // Generates a BFS traversal of the AirGraph from a given vertex.
+        // Does not run against disconnected components not containing the starting airport
+        // @param airport airport vertex from which to start BFS
+        // @return Unoredered map of prdecessors
+        std::unordered_map<Vertex,Vertex> BFS(const Vertex start);
+
+        std::vector<flight> BFS_Order(const Vertex start);
+
+        // ALL ALGOS WILL IMPLEMENT THIS INTERFACE
+        // Djikstra's algorithm for Single Source Shortest Path
+        // @param source Vertex key (OpenFlights ID) of requested source airport
+        // @return Vector of airports Vertexes defining path
+        std::unordered_map<Vertex, Vertex> Djikstra(const Vertex source);
+
+        // Modified PageRank to determine relative importance of Airports
+        // @param vertices A vector of which vertices to rank
+        // @return Unordered map connecting vertices to their relative importance
+        std::unordered_map<Vertex, double> airportRank(std::vector<Vertex> vertices);
+
+
+        // Graphical output
 
         // Return a render of the airports and flights on a world map
         // @param draw_airports Set if airports should be drawn
         // @param draw_flights Set if flights should be drawn
         cs225::PNG render(bool draw_airports, bool draw_flights);
 
-        //Render airport rank of all airports in graph
+        // Render airport rank of all airports in graph
+        // Runs against all airports and flights currently in AirGraph
         cs225::PNG renderAirportRank();
 
-        //Render corresponding algorithms
-
+        // Renders the shortest path between two airports using Djikstra's algorithm or BFS
+        // @param start Vertex representing the source airport
+        // @param end Vertex representing the destination airport
+        // @param isBFS Bool represenenting whether to use BFS or Djikstra's algorithm (true = BFS)
+        // @return PNG containing render of path
         cs225::PNG renderShortestPath(Vertex start, Vertex end, bool isBFS);
 
-        cs225::PNG renderLandmarkPath(std::vector<Vertex> vec);
-
+        // Render BFS in order of edges traversed
+        // @param start Vertex representing start airport of BFS traversal
+        // @return PNG containing render of BFS traversal
         cs225::PNG renderBFS(Vertex start);
 
     private:
+        // Private variables
+
         // Dictionary (Hash Map) to store OpenFlight_ID->airport mappings
         std::unordered_map<Vertex, airport> airports;
 
@@ -161,6 +180,8 @@ class AirGraph : public Graph {
 
         // Integer containing the number of invalid flights given
         int invalid;
+
+        // General helper functions
 
         // Helper function to parse user airport input
         // @param input User input string of IATA code or OpenFlights id

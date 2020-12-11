@@ -237,8 +237,6 @@ cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end, bool isBFS) {
     //initialize renderer with image and id -> airport map
     AirRenderer ar(base, airports);
 
-    isBFS ? true : false;
-
     // Store path from chosen algorithm
     std::unordered_map<Vertex, Vertex> travel = isBFS ? BFS(start) : Djikstra(start);
 
