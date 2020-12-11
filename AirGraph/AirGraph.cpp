@@ -207,6 +207,72 @@ cs225::PNG AirGraph::render(bool draw_airports, bool draw_flights) {
     return ar.draw_airports_and_flights(airport_vec, radii, flight_vec);
 }
 
+cs225::PNG AirGraph::renderAirportRank(std::vector<Vertex> subset){
+    //get weights from airport rank
+    auto weights = airportRank(subset);
+    //setup base map
+    cs225::PNG base;
+    base.readFromFile("mercator4.png");
+
+    //initialize renderer with image and id -> airport map
+    AirRenderer ar(base, airports);
+
+    //setup radii from airport rank weights
+    auto radii = std::vector<double>();
+    //setup airports from corresponding vertices
+    auto airport_vec = std::vector<airport>();
+    for(const Vertex& v: subset){
+        radii.push_back(weights[v] * 1000.0);
+        airport_vec.push_back(airports[v]);
+    }
+
+    return ar.draw_airports(airport_vec, radii);
+}
+
+cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end) {
+    //setup base map
+    cs225::PNG base;
+    base.readFromFile("mercator4.png");
+
+    //initialize renderer with image and id -> airport map
+    AirRenderer ar(base, airports);
+
+    //get shortest path
+    auto path = findShortestPath(start, end);
+    std::vector<airport> airport_vec;
+    std::vector<double> radii;
+    for(const flight& f : path){
+        airport_vec.push_back(airports[f.src_open_ID]);
+        radii.push_back(5.0);
+    }
+    airport_vec.push_back(airports[end]);
+    radii.push_back(5.0);
+
+    return ar.draw_airports_and_flights(airport_vec, radii, path);
+}
+
+cs225::PNG AirGraph::renderLandmarkPath(std::vector<Vertex> vec) {
+    //setup base map
+    cs225::PNG base;
+    base.readFromFile("mercator4.png");
+
+    //initialize renderer with image and id -> airport map
+    AirRenderer ar(base, airports);
+
+    //get landmark path
+    auto path = findLandmarkPath(vec);
+    std::vector<airport> airport_vec;
+    std::vector<double> radii;
+    for(const flight& f : path){
+        airport_vec.push_back(airports[f.src_open_ID]);
+        radii.push_back(5.0);
+    }
+    airport_vec.push_back(airports[vec.back()]);
+    radii.push_back(5.0);
+
+    return ar.draw_airports_and_flights(airport_vec, radii, path);
+}
+
 std::unordered_map<Vertex, double> AirGraph::airportRank(std::vector<Vertex> vertices) {
     //For more info see https://en.wikipedia.org/wiki/PageRank
 
