@@ -222,7 +222,7 @@ cs225::PNG AirGraph::renderAirportRank(std::vector<Vertex> subset){
     //setup airports from corresponding vertices
     auto airport_vec = std::vector<airport>();
     for(const Vertex& v: subset){
-        radii.push_back(weights[v] * 1000.0);
+        radii.push_back(weights[v] * 5000.0);
         airport_vec.push_back(airports[v]);
     }
 
@@ -238,7 +238,8 @@ cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end) {
     AirRenderer ar(base, airports);
 
     //get shortest path
-    auto path = findShortestPath(start, end);
+    std::cout << start << std::endl;
+    std::vector<flight> path/* = findShortestPath(start, end)*/;
     std::vector<airport> airport_vec;
     std::vector<double> radii;
     for(const flight& f : path){
@@ -260,7 +261,7 @@ cs225::PNG AirGraph::renderLandmarkPath(std::vector<Vertex> vec) {
     AirRenderer ar(base, airports);
 
     //get landmark path
-    auto path = findLandmarkPath(vec);
+    std::vector<flight> path/* = findLandmarkPath(vec)*/;
     std::vector<airport> airport_vec;
     std::vector<double> radii;
     for(const flight& f : path){

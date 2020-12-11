@@ -93,7 +93,7 @@ class AirGraph : public Graph {
         // Does not run against disconnected components not containing the starting airport
         // @param airport airport vertex from which to start BFS
         // @return TBD
-        std::vector<flight> AirGraph::BFS(const Vertex start);
+        std::vector<flight> BFS(const Vertex start);
 
         // Find shortest path between two airports
         // @param airport1 OpenFlights id of source airport
@@ -169,7 +169,7 @@ class AirGraph : public Graph {
         int airport_dist_ (airport airport1, airport airport2);
 
         // Internal helper to BFS iterations
-        void AirGraph::BFS(std::unordered_map<Vertex, bool>& explored_verts, std::vector<flight>& traversal, Vertex curr);
+        void BFS(std::unordered_map<Vertex, bool>& explored_verts, std::vector<flight>& traversal, Vertex curr);
 
         // Helper function for AirportRank to multiply matrix by a vector
         std::vector<double> multiply_matrix_(std::vector<std::vector<double>> matrix, std::vector<double> vector);
