@@ -2,7 +2,7 @@
 
 #include "./AirGraph/AirGraph.h"
 
-std::vector<string> AirGraph::BFS(const Vertex start) {
+std::vector<flight> AirGraph::BFS(const Vertex start) {
     // Unordered map correlating vertex labels to exploration state
     // false: Unexplored, true: Explored
     std::unordered_map<Vertex, bool> explored_v;
@@ -27,6 +27,8 @@ std::vector<string> AirGraph::BFS(const Vertex start) {
             BFS(explored_v, traversal, curr);
         }
     }
+    // Return vector containing routes traverses via exemplar first flight in route
+    return traversal;
 }
     
 void AirGraph::BFS(std::unordered_map<Vertex, bool>& explored_verts, std::vector<flight>& traversal, Vertex curr) {

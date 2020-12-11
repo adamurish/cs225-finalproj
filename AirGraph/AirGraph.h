@@ -153,7 +153,7 @@ class AirGraph : public Graph {
         // Does not run against disconnected components not containing the starting airport
         // @param airport airport vertex from which to start BFS
         // @return TBD
-        std::vector<string> AirGraph::BFS(const Vertex start);
+        std::vector<flight> AirGraph::BFS(const Vertex start);
         // Internal helper to BFS iterations
         void AirGraph::BFS(std::unordered_map<Vertex, bool>& explored_verts, std::vector<flight>& traversal, Vertex curr);
 
