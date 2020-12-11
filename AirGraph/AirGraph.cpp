@@ -206,3 +206,106 @@ cs225::PNG AirGraph::render(bool draw_airports, bool draw_flights) {
     //return the output of the render
     return ar.draw_airports_and_flights(airport_vec, radii, flight_vec);
 }
+
+std::unordered_map<Vertex, double> AirGraph::airportRank(std::vector<Vertex> vertices) {
+    //For more info see https://en.wikipedia.org/wiki/PageRank
+
+    //This modified PageRank algorithm works by first constructing an adjacency matrix of the given vertices.
+    //It then normalizes every column of the matrix to have a sum of 1, creating a markov matrix.
+    //This markov matrix represents the probability of moving from one airport to another, assuming random choice.
+    //The algorithm can then calculate the "steady-state" of the matrix by finding the eigenvector of the matrix
+    //with eigenvalue 1, which is done by power iteration, multiplying the matrix by a random starting state
+    //repeatedly, until it reaches the steady state. This steady state vector holds the probability of ending up at each
+    //airport in the matrix after a long time, and thus can be used to determine their respective importances, the
+    //airport with the highest probability is the most important, etc.
+
+    //setup maps from Vertex to adj matrix index and vice versa
+    //This is kind of messy, but allows for running airport rank on subgraphs
+    std::unordered_map<Vertex, int> idx_map;
+    std::unordered_map<int, Vertex> vertex_map;
+    std::unordered_map<Vertex, double> ret;
+    int current_idx = 0;
+    for(const Vertex& v : vertices){
+        idx_map[v] = current_idx;
+        vertex_map[current_idx] = v;
+        ret[v] = 0.0;
+        current_idx++;
+    }
+
+    int num_airports = current_idx;
+
+    auto adj_matrix = std::vector<std::vector<double>>(num_airports);
+    for(auto &col : adj_matrix){
+        col = std::vector<double>(num_airports, 0.0);
+    }
+
+    // populating adjacency matrix,
+    // [i][j] is 1.0 if the vertices corresponding to index i and j are adjacent, if not it is 0.0
+    for(const Vertex& v : vertices){
+        for(const Vertex& adj : getAdjacent(v)){
+            if(idx_map.count(adj) >= 1){
+                adj_matrix[idx_map[v]][idx_map[adj]] = 1.0;
+            }
+        }
+    }
+
+    // normalizing adj_matrix
+    for(auto &col : adj_matrix){
+        double sum = 0.0;
+        for(double val : col){
+            sum += val;
+        }
+        for(double& val : col){
+            //if sum is greater than 0, divide each value by sum to get norm
+            if(sum > 0.0)
+                val = val / sum;
+            //if it is 0, the airport has no outgoing routes, so we assume that someone who is there will
+            //randomly go to any other airport in the matrix (this is the assumption made in the original PageRank)
+            else
+                val = 1.0 / ((double) num_airports);
+        }
+    }
+    //the adjacency matrix is now a markov matrix, as all of its columns add up to 1
+
+    //perform power iteration on markov matrix
+    //see https://en.wikipedia.org/wiki/Power_iteration for more info
+    //Note that since we are performing it on a markov matrix, we are guaranteed that the largest eigenvalue will be 1
+
+    //start vector is all 1/n
+    auto b_k = std::vector<double>(num_airports, 1.0 / ((double) num_airports));
+    //According to original paper, the algorithm generally converges good enough after 50 cycles
+    //Could possibly lower this for efficiency
+    int num_cycles = 50;
+    for(int i = 0; i < num_cycles; ++i){
+        b_k = multiply_matrix_(adj_matrix, b_k);
+    }
+
+    //insert weights into return map, which takes vertices to their probabilities
+    for(int i = 0; i < num_airports; ++i){
+        ret[vertex_map[i]] = b_k[i];
+    }
+
+    return ret;
+}
+
+std::vector<double> AirGraph::multiply_matrix_(std::vector<std::vector<double>> matrix, std::vector<double> vector) {
+    //setup return vector
+    auto ret = std::vector<double>(vector.size(), 0.0);
+
+    //matrix must be square
+    if(matrix.size() != matrix[0].size()) {
+        std::cout << "Tried to call multiply matrix on non-square matrix" << std::endl;
+        return ret;
+    }
+
+    //rows
+    for(unsigned i = 0; i < matrix.size(); ++i){
+        //columns
+        for(unsigned j = 0; j < matrix.size(); ++j){
+            // jth row of return vector is the linear combination of the jth row of matrix with vector as weights
+            ret[j] += matrix[i][j] * vector[i];
+        }
+    }
+
+    return ret;
+}

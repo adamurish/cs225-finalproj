@@ -100,6 +100,11 @@ class AirGraph : public Graph {
         // @return TBD
         std::vector<flight> findLandmarkPath(std::vector<Vertex> vec);
 
+        // Modified PageRank to determine relative importance of Airports
+        // @param vertices A vector of which vertices to rank
+        // @return Unordered map connecting vertices to their relative importance
+        std::unordered_map<Vertex, double> airportRank(std::vector<Vertex> vertices);
+
         // Return the number of airlines
         // @return Integer number of airlines
         int getNumAirlines() { return airlines.size(); };
@@ -149,4 +154,7 @@ class AirGraph : public Graph {
         // @param airport airport vertex from which to start BFS
         // @return TBD
         std::vector<string> AirGraph::BFS(const Vertex airport);
+
+        // Helper function for AirportRank to multiply matrix by a vector
+        std::vector<double> multiply_matrix_(std::vector<std::vector<double>> matrix, std::vector<double> vector);
 };
