@@ -12,11 +12,17 @@ AirRenderer::AirRenderer(cs225::PNG& base, std::unordered_map<Vertex, airport>& 
 
 cs225::PNG AirRenderer::draw_airports_and_flights(const vector<airport> &airports, const vector<double>& radii, const vector<flight> &flights) {
     auto ret = cs225::PNG(base_image);
+    if(airports.size() != radii.size()){
+        std::cout << "Airport vector and radii vector are not the same size" << std::endl;
+        return ret;
+    }
+
     int i = 0;
     for(const airport& ap : airports){
         //project airport onto map and then draw a circle at its location
         auto center = project(std::stod(ap.latitude), std::stod(ap.longitude));
-        draw_circle(center, radii[i++], ret, 100);
+        draw_circle(center, radii[i], ret, 5000);
+        i++;
     }
     for(const flight& fl : flights){
         //project start and end onto map, then connect them with a line
@@ -70,7 +76,7 @@ void AirRenderer::draw_circle(std::pair<int, int> center, double radius, cs225::
         int x = lrint(center.first + (radius * cos(discrete_delta * t)));
         int y = lrint(center.second + (radius * sin(discrete_delta * t)));
         //draw line from center to edge of circle
-        draw_line(center, {x, y}, image, 100);
+        draw_line(center, {x, y}, image, ceil(radius));
     }
 }
 
