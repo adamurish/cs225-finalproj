@@ -91,8 +91,8 @@ int main(int argc, char* argv[]){
     }
     else if (operation == "render" && argc == 5) {
         if(string(argv[4]) == "airports") image = traffic.render(true, false);
-        if(string(argv[4]) == "routes") image = traffic.render(false, true);
-        if(string(argv[4]) == "all") image = traffic.render(true, true);
+        else if(string(argv[4]) == "routes") image = traffic.render(false, true);
+        else if(string(argv[4]) == "all") image = traffic.render(true, true);
         else return fail("RENDER: Invalid operation");
     }
     else {
