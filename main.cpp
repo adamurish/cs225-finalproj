@@ -3,11 +3,14 @@
 #include "./cs225/PNG.h"
 #include <iostream>
 
-int main(){
-
+int main(int argc, char* argv[]){
     AirGraph traffic;
 
-    
+    //input files (airports + routes)
+    //algorithm to run
+
+    std::cout << argc << std::endl;
+    std::cout << argv[0] << std::endl;
     FileParser parseAirports("./datasets/airports.dat");
     std::vector<std::vector<string>*>* airports = parseAirports.get_file();
     traffic.insertAirports(airports);
