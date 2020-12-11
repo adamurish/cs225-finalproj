@@ -75,7 +75,7 @@ test: $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
 
 # Clean all build artifacts
 clean : 
-	rm -f ./build/* ./main ./test
+	rm -f ./build/* ./traffic ./test
 
 # Download all datasets from OpenFlights
 fetch : ./datasets ./datasets/airports.dat ./datasets/airlines.dat ./datasets/routes.dat
