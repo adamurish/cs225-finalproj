@@ -3,7 +3,7 @@ CXX = clang++
 # Set linker to clang++
 LD = clang++
 
-ALL_NON_EXE_OBJS = ./build/AirGraph.o ./build/BFS.o ./build/file_parser.o ./build/graph.o ./build/PNG.o ./build/HSLAPixel.o ./build/lodepng.o ./build/AirRenderer.o
+ALL_NON_EXE_OBJS = ./build/AirGraph.o ./build/BFS.o ./build/shortestPath.o ./build/Djikstra.o ./build/file_parser.o ./build/graph.o ./build/PNG.o ./build/HSLAPixel.o ./build/lodepng.o ./build/AirRenderer.o
 
 
 # Set compiler flags to standard for course
@@ -39,6 +39,14 @@ test: $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
 
 # Compile BFS
 ./build/BFS.o : ./algorithms/BFS.cpp ./AirGraph/AirGraph.h
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+# Compile shortestPath
+./build/shortestPath.o : ./algorithms/shortestPath.cpp ./AirGraph/AirGraph.h
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+# Compile Djikstra
+./build/Djikstra.o : ./algorithms/Djikstra.cpp ./AirGraph/AirGraph.h
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 # Compile Graph (required by AirGraph)

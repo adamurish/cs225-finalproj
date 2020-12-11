@@ -238,18 +238,22 @@ cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end) {
     AirRenderer ar(base, airports);
 
     //get shortest path
-    std::cout << start << std::endl;
-    std::vector<flight> path/* = findShortestPath(start, end)*/;
+    std::vector<Vertex> path = shortestPath(start, end);
+
+    std::vector<flight> flight_vec;
     std::vector<airport> airport_vec;
     std::vector<double> radii;
-    for(const flight& f : path){
-        airport_vec.push_back(airports[f.src_open_ID]);
+    Vertex last = start;
+    for(const Vertex & v : path){
+        if(last != start){
+            flight_vec.push_back(routes[std::stoi(getEdge(last, v).getLabel())]->at(0));
+            last = v;
+        }
+        airport_vec.push_back(airports[v]);
         radii.push_back(5.0);
     }
-    airport_vec.push_back(airports[end]);
-    radii.push_back(5.0);
 
-    return ar.draw_airports_and_flights(airport_vec, radii, path);
+    return ar.draw_airports_and_flights(airport_vec, radii, flight_vec);
 }
 
 cs225::PNG AirGraph::renderLandmarkPath(std::vector<Vertex> vec) {
