@@ -245,7 +245,7 @@ cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end) {
     std::vector<double> radii;
     Vertex last = start;
     for(const Vertex & v : path){
-        if(last != start){
+        if(v != start) {
             flight_vec.push_back(routes[std::stoi(getEdge(last, v).getLabel())]->at(0));
             last = v;
         }
