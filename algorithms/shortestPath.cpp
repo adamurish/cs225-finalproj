@@ -26,7 +26,7 @@ std::vector<Vertex> AirGraph::shortestPath(const Vertex start, const Vertex end,
 
     else {
         // No path found, clear vector to print no flights
-        predecessor.clear();
+        path.clear();
     }
     
     // Return vector of vertices that holds the shortest path from start vertex to end vertex
