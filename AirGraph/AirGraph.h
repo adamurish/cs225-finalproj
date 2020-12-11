@@ -122,6 +122,14 @@ class AirGraph : public Graph {
         // @param draw_flights Set if flights should be drawn
         cs225::PNG render(bool draw_airports, bool draw_flights);
 
+        //Render a subset of airports in graph
+        cs225::PNG renderAirportRank(std::vector<Vertex> subset);
+
+        //Render a shortest path
+        cs225::PNG renderShortestPath(Vertex start, Vertex end);
+
+        cs225::PNG renderLandmarkPath(std::vector<Vertex> vec);
+
     private:
         // Dictionary (Hash Map) to store OpenFlight_ID->airport mappings
         std::unordered_map<Vertex, airport> airports;
