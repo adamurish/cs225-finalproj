@@ -95,7 +95,7 @@ class AirGraph : public Graph {
         // @return Unoredered map of prdecessors
         std::unordered_map<Vertex,Vertex> BFS(const Vertex start);
 
-        std::vector<flight> AirGraph::BFS_Order(const Vertex start);
+        std::vector<flight> BFS_Order(const Vertex start);
 
         // ALL ALGOS WILL IMPLEMENT THIS INTERFACE
         // Djikstra's algorithm for Single Source Shortest Path
@@ -179,7 +179,7 @@ class AirGraph : public Graph {
         int airport_dist_ (airport airport1, airport airport2);
 
         // Internal helper to BFS iterations
-        void AirGraph::BFS(std::unordered_map<Vertex, bool>& explored_verts, std::unordered_map<Vertex,Vertex>& traversal, std::vector<flight>& traversal_path, Vertex curr);
+        void BFS(std::unordered_map<Vertex, bool>& explored_verts, std::unordered_map<Vertex,Vertex>& traversal, std::vector<flight>& traversal_path, Vertex curr);
 
         // Helper function for AirportRank to multiply matrix by a vector
         std::vector<double> multiply_matrix_(std::vector<std::vector<double>> matrix, std::vector<double> vector);

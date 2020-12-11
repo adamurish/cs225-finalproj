@@ -238,7 +238,7 @@ cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end) {
     AirRenderer ar(base, airports);
 
     //get shortest path
-    std::vector<Vertex> path = shortestPath(start, end);
+    std::vector<Vertex> path = shortestPath(start, end, Djikstra(start));
 
     std::vector<flight> flight_vec;
     std::vector<airport> airport_vec;
