@@ -95,11 +95,16 @@ class AirGraph : public Graph {
         // @return TBD
         std::vector<flight> BFS(const Vertex start);
 
-        // Find shortest path between two airports
-        // @param airport1 OpenFlights id of source airport
-        // @param airport2 OpenFlights id of destination airport
-        // @return Vector containing flights creating shortest path
-        std::vector<flight> findShortestPath(Vertex airport1, Vertex airport2);
+        // ALL ALGOS WILL IMPLEMENT THIS INTERFACE
+        // Djikstra's algorithm for Single Source Shortest Path
+        // @param source Vertex key (OpenFlights ID) of requested source airport
+        // @return Vector of airports Vertexes defining path
+        std::unordered_map<Vertex, Vertex> AirGraph::Djikstra(const Vertex source);
+        
+        // function that returns the shortest path given a start and end vertex 
+        // @param source Vertex key (OpenFlights ID) of requested source airport
+        // @return Vector of airports Vertexes defining path
+        std::vector<Vertex> AirGraph::shortestPath(const Vertex start, const Vertex end);
         
         // Find shortest landmark path
         // @param vec Vector of OpenFlight IDs of airports in order of visitation
