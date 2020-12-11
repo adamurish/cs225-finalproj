@@ -4,20 +4,6 @@
 #include "../graph/graph.h"
 #include "../graph/edge.h"
 
-TEST_CASE("Test Case Name")
-{
-	// Insert code to run here	
-	//...
-	//
-	AirGraph traffic;
-
-	// Require in order to pass case, aborts execution on failure
-	REQUIRE(true);
-
-	// Reuire in order to pass case, continues execution on failure
-	CHECK(true);
-};
-
 //FILE PARSER TEST CASES
 
 TEST_CASE("File parser reads correct number of lines", "[module=parsing]"){
@@ -85,3 +71,81 @@ TEST_CASE("AirGraph loads all routes", "[module=AirGraph]"){
     REQUIRE(ag.getEdges().size() == 9);
 }
 
+// ALGORITHM TEST CASES
+// THESE CASES REQUIRE THE FULL OPENFLIGHTS DATASETS
+
+TEST_CASE("SSSP finds shortest path using BFS", "[module=algorithms]"){
+    FileParser ap_fp("datasets/airports.dat");
+    FileParser route_fp("datasets/routes.dat");
+    AirGraph ag;
+    ag.insertAirports(ap_fp.get_file());
+    ag.insertFlights(route_fp.get_file());
+
+    Vertex lax = ag.getAirportID("LAX");
+    Vertex abt = ag.getAirportID("ABT");
+
+    auto path = ag.shortestPath(lax, abt, ag.BFS(lax));
+    REQUIRE(path.front() == lax);
+    REQUIRE(path.back() == abt);
+    //the shortest path from lax to abt uses only 1 stop in between
+    REQUIRE(path.size() == 3);
+}
+
+TEST_CASE("SSSP finds shortest path using Djikstra", "[module=algorithms]"){
+    FileParser ap_fp("datasets/airports.dat");
+    FileParser route_fp("datasets/routes.dat");
+    AirGraph ag;
+    ag.insertAirports(ap_fp.get_file());
+    ag.insertFlights(route_fp.get_file());
+
+    Vertex lax = ag.getAirportID("LAX");
+    Vertex abt = ag.getAirportID("ABT");
+
+    auto path = ag.shortestPath(lax, abt, ag.Djikstra(lax));
+    REQUIRE(path.front() == lax);
+    REQUIRE(path.back() == abt);
+    //the shortest path from lax to abt uses only 1 stop in between
+    REQUIRE(path.size() == 3);
+}
+
+TEST_CASE("BFS properly traverses airports", "[module=algorithms]"){
+    FileParser ap_fp("datasets/airports.dat");
+    FileParser route_fp("datasets/routes.dat");
+    AirGraph ag;
+    ag.insertAirports(ap_fp.get_file());
+    ag.insertFlights(route_fp.get_file());
+
+    auto bfs = ag.BFS_Order(ag.getAirportID("LAX"));
+    //check to make sure the BFS traversal goes to all airports around LAX before continuing deeper
+    auto adj = ag.getAdjacent(ag.getAirportID("LAX"));
+    for(unsigned i = 0; i < adj.size(); ++i) {
+        Vertex vert = bfs[i].dest_open_ID;
+        if (vert != "-1") {
+            bool found = false;
+            for (Vertex v : adj) {
+                if (vert == v)
+                    found = true;
+            }
+            if (!found) {
+                std::cout << "Could not find " << ag.getAirportID(bfs[i].dest_open_ID) << std::endl;
+            }
+            REQUIRE(found == true);
+        }
+    }
+}
+
+TEST_CASE("AirportRank returns probabilities adding up to 1", "[module=algorithms]"){
+    FileParser ap_fp("datasets/airports.dat");
+    FileParser route_fp("datasets/routes.dat");
+    AirGraph ag;
+    ag.insertAirports(ap_fp.get_file());
+    ag.insertFlights(route_fp.get_file());
+
+    std::vector<Vertex> test_vertices = {ag.getAirportID("LAX"),ag.getAirportID("ORD"),ag.getAirportID("STL"),ag.getAirportID("ATL")};
+    auto weights = ag.airportRank(test_vertices);
+    double sum = 0.0;
+    for(auto v : test_vertices){
+        sum += weights[v];
+    }
+    REQUIRE(sum == 1.0);
+}

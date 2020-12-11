@@ -7,8 +7,10 @@ int print_help(){
     std::cout << "USAGE:" << std::endl;
     std::cout << "\t ./traffic /path/to/airports.dat /path/to/routes.dat [operation] [operation arguments]" << std::endl;
     std::cout << "OPERATIONS:" << std::endl;
-    std::cout << "sssp : calculates single source shortest path using Djikstra's algorithm" << std::endl;
+    std::cout << "sssp : calculates single source shortest path using a specified traversal algorithm" << std::endl;
     std::cout << "\t-- Requires two additional arguments, the start and endpoint for the path, given as airport IATA codes" << std::endl;
+    std::cout << "\t-- Requires a choice of traversal, either BFS or Djikstras" << std::endl;
+    std::cout << "\t sssp [start_airport] [end_airport] [bfs, djikstra]" << std::endl;
     std::cout << "airportrank : Uses a modified version of Google's PageRank to calculate airport importance" << std::endl;
     std::cout << "bfs : Traverses the airport graph using breadth first search" << std::endl;
     std::cout << "\t-- Requires one additional argument, the starting point of traversal, given as airport IATA code" << std::endl;
@@ -65,13 +67,16 @@ int main(int argc, char* argv[]){
 
     cs225::PNG image;
 
-    if(operation == "sssp" && argc == 6){
+    if(operation == "sssp" && argc == 7){
         string id = traffic.getAirportID(argv[4]);
         string id2 = traffic.getAirportID(argv[5]);
         if(id == "-1" || id2 == "-1"){
             return fail("SSSP: Invalid airport IATA code");
         }
-        image = traffic.renderShortestPath(id, id2);
+        string trav = argv[6];
+        if(trav == "bfs") image = traffic.renderShortestPath(id, id2, true);
+        else if(trav == "djikstra") image = traffic.renderShortestPath(id, id2, false);
+        else return fail("SSSP: Invalid traversal");
     }
     else if (operation == "airportrank") {
         image = traffic.renderAirportRank();
