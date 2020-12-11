@@ -273,6 +273,28 @@ cs225::PNG AirGraph::renderLandmarkPath(std::vector<Vertex> vec) {
     return ar.draw_airports_and_flights(airport_vec, radii, path);
 }
 
+cs225::PNG AirGraph::renderBFS(Vertex start) {
+    //setup base map
+    cs225::PNG base;
+    base.readFromFile("mercator4.png");
+
+    //initialize renderer with image and id -> airport map
+    AirRenderer ar(base, airports);
+
+    //get landmark path
+    auto path = BFS(start);
+    std::vector<airport> airport_vec;
+    std::vector<double> radii;
+    for(const flight& f : path){
+        airport_vec.push_back(airports[f.src_open_ID]);
+        radii.push_back(5.0);
+    }
+    airport_vec.push_back(airports[path.back().dest_open_ID]);
+    radii.push_back(5.0);
+
+    return ar.draw_airports_and_flights(airport_vec, radii, path);
+}
+
 std::unordered_map<Vertex, double> AirGraph::airportRank(std::vector<Vertex> vertices) {
     //For more info see https://en.wikipedia.org/wiki/PageRank
 

@@ -1,5 +1,6 @@
 #include "./AirGraph/AirGraph.h"
 #include "./parsing/file_parser.h"
+#include "./cs225/PNG.h"
 #include <iostream>
 
 int main(){
@@ -30,7 +31,15 @@ int main(){
     std::cout << "Flights Stored: " << traffic.getNumFlights() << std::endl;
     std::cout << "Flights Invalid: " << traffic.getNumInvalidFlights() << std::endl;
 
-    traffic.render().writeToFile("render.png");
+    string id = traffic.getAirportID("ORD");
+
+    
+    cs225::PNG image = traffic.renderBFS(id);
+
+    image.writeToFile("./testimage.png");
+
+    // I don't know if you want to keep this
+    //traffic.render().writeToFile("render.png");
 
     return 0;
 }
