@@ -36,7 +36,7 @@ void AirGraph::BFS(std::unordered_map<Vertex, bool>& explored_verts, std::vector
     // Mark the current vertex as explored
     explored_verts[curr] = true;
     
-    // Push the current vertex into the queue
+    // Push the starting vertex into the queue
     q.push(curr);
 
     // Repeat until all vertices have been visited
