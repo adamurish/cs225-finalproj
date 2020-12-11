@@ -190,8 +190,8 @@ cs225::PNG AirGraph::render(bool draw_airports, bool draw_flights) {
 
     if(draw_airports) {
         for (const Vertex &v : getVertices()) {
-            //each circle has raidus 2
-            radii.push_back(2.0);
+            //each circle has raidus 5
+            radii.push_back(5.0);
             //include every airport in the graph
             airport_vec.push_back(airports[v]);
         }
@@ -241,7 +241,7 @@ cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end, bool isBFS) {
     std::unordered_map<Vertex, Vertex> travel = isBFS ? BFS(start) : Djikstra(start);
 
     // Get shortest path
-    std::vector<Vertex> path = shortestPath(start, end, Djikstra(start));
+    std::vector<Vertex> path = shortestPath(start, end, travel);
     
     // Create vector of flights
     std::vector<flight> flight_vec;

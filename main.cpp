@@ -23,6 +23,7 @@ int fail(string reason){
     std::cout << "Program has failed, reason: " << reason << std::endl;
     return 1;
 }
+
 int main(int argc, char* argv[]){
     AirGraph traffic;
 
