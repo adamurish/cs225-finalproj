@@ -31,15 +31,12 @@ std::vector<string> AirGraph::BFS(const Vertex airport) {
 
     // Create a queue for BFS
     std::queue<string> q;
-
-    // Rename the starting airport for clarity
-    Vertex curr = airport;
     
-    // Mark the current vertex as explored
-    explored_v[curr] = true;
+    // Mark the starting vertex as explored
+    explored_v[airport] = true;
     
-    // Push the current vertex into the queue
-    q.push(curr);
+    // Push the starting vertex into the queue
+    q.push(airport);
 
     // Repeat until all vertices have been visited (within connected component)
     while(!q.empty()){
@@ -64,7 +61,7 @@ std::vector<string> AirGraph::BFS(const Vertex airport) {
             }
         }
     }
-    //returns a vector of edges
+    //returns a vector of edges 
     return traversal;
 } 
 
