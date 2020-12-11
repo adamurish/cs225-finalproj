@@ -107,11 +107,6 @@ class AirGraph : public Graph {
         // @param source Vertex key (OpenFlights ID) of requested source airport
         // @return Vector of airports Vertexes defining path
         std::vector<Vertex> shortestPath(const Vertex start, const Vertex end, std::unordered_map<Vertex, Vertex> predecessor);
-        
-        // Find shortest landmark path
-        // @param vec Vector of OpenFlight IDs of airports in order of visitation
-        // @return TBD
-        std::vector<flight> findLandmarkPath(std::vector<Vertex> vec);
 
         // Modified PageRank to determine relative importance of Airports
         // @param vertices A vector of which vertices to rank
@@ -145,7 +140,7 @@ class AirGraph : public Graph {
 
         //Render corresponding algorithms
 
-        cs225::PNG renderShortestPath(Vertex start, Vertex end);
+        cs225::PNG renderShortestPath(Vertex start, Vertex end, bool isBFS);
 
         cs225::PNG renderLandmarkPath(std::vector<Vertex> vec);
 

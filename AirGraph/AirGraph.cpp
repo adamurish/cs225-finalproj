@@ -229,7 +229,7 @@ cs225::PNG AirGraph::renderAirportRank(){
     return ar.draw_airports(airport_vec, radii);
 }
 
-cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end) {
+cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end, bool isBFS) {
     //setup base map
     cs225::PNG base;
     base.readFromFile("mercator4.png");
@@ -237,45 +237,34 @@ cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end) {
     //initialize renderer with image and id -> airport map
     AirRenderer ar(base, airports);
 
-    //get shortest path
-    std::vector<Vertex> path = shortestPath(start, end, Djikstra(start));
+    isBFS ? true : false;
 
+    // Store path from chosen algorithm
+    std::unordered_map<Vertex, Vertex> travel = isBFS ? BFS(start) : Djikstra(start);
+
+    // Get shortest path
+    std::vector<Vertex> path = shortestPath(start, end, Djikstra(start));
+    
+    // Create vector of flights
     std::vector<flight> flight_vec;
+    // Create vector of airports
     std::vector<airport> airport_vec;
     std::vector<double> radii;
     Vertex last = start;
+    //Loop through the shortest path
     for(const Vertex & v : path){
+        // Retrace backwards through the vertex untill at start
         if(v != start) {
+            // Add the current flight to the flight vectors
             flight_vec.push_back(routes[std::stoi(getEdge(last, v).getLabel())]->at(0));
             last = v;
         }
+        // Add the current airport to the airport vectors
         airport_vec.push_back(airports[v]);
         radii.push_back(5.0);
     }
-
+    // Return the rendered png of airports and flights
     return ar.draw_airports_and_flights(airport_vec, radii, flight_vec);
-}
-
-cs225::PNG AirGraph::renderLandmarkPath(std::vector<Vertex> vec) {
-    //setup base map
-    cs225::PNG base;
-    base.readFromFile("mercator4.png");
-
-    //initialize renderer with image and id -> airport map
-    AirRenderer ar(base, airports);
-
-    //get landmark path
-    std::vector<flight> path/* = findLandmarkPath(vec)*/;
-    std::vector<airport> airport_vec;
-    std::vector<double> radii;
-    for(const flight& f : path){
-        airport_vec.push_back(airports[f.src_open_ID]);
-        radii.push_back(5.0);
-    }
-    airport_vec.push_back(airports[vec.back()]);
-    radii.push_back(5.0);
-
-    return ar.draw_airports_and_flights(airport_vec, radii, path);
 }
 
 cs225::PNG AirGraph::renderBFS(Vertex start) {
@@ -286,12 +275,15 @@ cs225::PNG AirGraph::renderBFS(Vertex start) {
     //initialize renderer with image and id -> airport map
     AirRenderer ar(base, airports);
 
-    //get landmark path
+    //get BFS traversal
     auto path = BFS_Order(start);
+    // Create vectors of airports and their radii
     std::vector<airport> airport_vec;
     std::vector<double> radii;
+    // Insert start airport
     airport_vec.push_back(airports[start]);
     radii.push_back(5.0);
+    // Insert all remaining airports
     for(const flight& f : path){
         airport_vec.push_back(airports[f.dest_open_ID]);
         radii.push_back(5.0);
