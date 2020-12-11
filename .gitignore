@@ -1,7 +1,8 @@
 .vscode/
 build/
 datasets/
-main
+traffic
 test
 .idea/
 *.o
+*.png
