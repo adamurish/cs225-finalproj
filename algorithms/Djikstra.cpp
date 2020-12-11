@@ -32,11 +32,8 @@ std::unordered_map<Vertex, Vertex> AirGraph::Djikstra(const Vertex start) {
     // Insert the source vertex into the priority queue
     pqueue.push(vPair(0, start));
 
-    // Store number of vertices in original graph
-    int numVerts = getVertices().size();
-
     // Loop through every vertex in the graph
-    for (int n = 0; n < numVerts; n++) {
+    while (!pqueue.empty()) {
         // Dequeue and store the vertex with the minimum distance from priority queue
         Vertex u = pqueue.top().second;
         pqueue.pop();
