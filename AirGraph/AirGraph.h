@@ -89,6 +89,12 @@ class AirGraph : public Graph {
         // @param vec Pointer to vector contiaing airlines vector pointers
         void storeAirlines(std::vector<std::vector<string>*>* vec); // Implemented
 
+        // Helper function that gerenates a BFS traversal of the AirGraph from a given vertex.
+        // Does not run against disconnected components not containing the starting airport
+        // @param airport airport vertex from which to start BFS
+        // @return TBD
+        std::vector<flight> AirGraph::BFS(const Vertex start);
+
         // Find shortest path between two airports
         // @param airport1 OpenFlights id of source airport
         // @param airport2 OpenFlights id of destination airport
@@ -117,7 +123,12 @@ class AirGraph : public Graph {
         // @return Integer number of flights
         int getNumFlights();
 
-        //Return a render of the airports and flights on a world map
+        // Return the OpenFlights ID of an airport given it's IATA
+        // @param airport String containing the IATA of the target airport
+        // @return String containing the OpenFlights ID of the requested airport ("-1" if not found)
+        std::string getAirportID(std::string airport);
+
+        // Return a render of the airports and flights on a world map
         // @param draw_airports Set if airports should be drawn
         // @param draw_flights Set if flights should be drawn
         cs225::PNG render(bool draw_airports, bool draw_flights);
@@ -149,11 +160,6 @@ class AirGraph : public Graph {
         // @return Distance between airports as integer
         int airport_dist_ (airport airport1, airport airport2);
 
-        // Helper function that gerenates a BFS traversal of the AirGraph from a given vertex.
-        // Does not run against disconnected components not containing the starting airport
-        // @param airport airport vertex from which to start BFS
-        // @return TBD
-        std::vector<flight> AirGraph::BFS(const Vertex start);
         // Internal helper to BFS iterations
         void AirGraph::BFS(std::unordered_map<Vertex, bool>& explored_verts, std::vector<flight>& traversal, Vertex curr);
 

@@ -309,3 +309,18 @@ std::vector<double> AirGraph::multiply_matrix_(std::vector<std::vector<double>> 
 
     return ret;
 }
+
+
+std::string AirGraph::getAirportID(std::string airport) {
+    // Get iterator to requested airport
+    auto it = iata_to_id.find(airport);
+    // Check if IATA exists
+    if (it != iata_to_id.end()) {
+        // Return the OpenFlights ID of the airport
+        return it->second;
+    }
+    else {
+        // OpenFlights ID not found, return "-1"
+        return "-1";
+    }
+}
