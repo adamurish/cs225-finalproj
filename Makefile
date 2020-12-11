@@ -45,6 +45,7 @@ test: $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
 ./build/file_parser.o : ./parsing/file_parser.cpp ./parsing/file_parser.h 
 	$(CXX) $(CXXFLAGS) $< -o $@
 
+# Compile AirRenderer
 ./build/AirRenderer.o : ./rendering/AirRenderer.cpp ./rendering/AirRenderer.h
 	$(CXX) $(CXXFLAGS) $< -o $@
 
