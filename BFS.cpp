@@ -2,46 +2,44 @@
 
 #include "./AirGraph/AirGraph.h"
 
-//NEED TO INCLUDE!!!!!!!
-//this implementation can't handle disjoint graphs
-//fix predeccesor/depth calculations
-
-std::vector<string> AirGraph::BFS(const Vertex airport) {
+std::vector<string> AirGraph::BFS(const Vertex start) {
     // Unordered map correlating vertex labels to exploration state
     // false: Unexplored, true: Explored
     std::unordered_map<Vertex, bool> explored_v;
 
-    // Unordered map correlating edges labels to exploration state
-    // false: cross, true: discovery
-    std::unordered_map<string, bool> discovery_e;
-
     // Vector containing order of traversal
-    std::vector<string> traversal;
+    std::vector<flight> traversal;
 
     // (initialize) Mark all the vertices as unexplored
     for(Vertex v: getVertices()) {
         // Insert vertex pair into exploration map
         explored_v[v] = false;
     }
-    // (initialize) Mark all the edges as unexplored
-    for(Edge e: getEdges()) {
-        // Insert edge pair into exploration map
-        discovery_e[e.getLabel()] = false;
-    }
 
+    // Run BFS initially on start vertex
+    BFS(explored_v, traversal, start);
+
+    // Loop through all vertices in order to traverse disconnected components
+    for (Vertex curr : getVertices()) {
+        // Only rerun BFS on vertex if not already discovered
+        if (!explored_v[curr]) {
+            // Run BFS on current vertex
+            BFS(explored_v, traversal, curr);
+        }
+    }
+}
+    
+void AirGraph::BFS(std::unordered_map<Vertex, bool>& explored_verts, std::vector<flight>& traversal, Vertex curr) {
     // Create a queue for BFS
     std::queue<string> q;
-
-    // Rename the starting airport for clarity
-    Vertex curr = airport;
     
     // Mark the current vertex as explored
-    explored_v[curr] = true;
+    explored_verts[curr] = true;
     
     // Push the current vertex into the queue
     q.push(curr);
 
-    // Repeat until all vertices have been visited (within connected component)
+    // Repeat until all vertices have been visited
     while(!q.empty()){
         // Dequeue and store next vertex
         Vertex v = q.front();
@@ -49,23 +47,14 @@ std::vector<string> AirGraph::BFS(const Vertex airport) {
         // Get all adjacent vertices of the vertex under examination
         for (Vertex w: getAdjacent(v)) {
             // Check if new vertex discovered
-            if (!explored_v[w]) {
-                // Label edge as explored edge (dicovery is unneeded)
-                discovery_e[getEdgeLabel(v, w)] = true;
+            if (!explored_verts[w]) {
                 // Label vertex as explored
-                explored_v[w] = true;
+                explored_verts[w] = true;
                 // Add the adjacent vertex to queue
                 q.push(w);
-            }
-            //Cross Edge
-            //else if (!discovery_e[getEdgeLabel(v, w)]){ //getEdgeLabel(v, w) == "Unexplored"
-            //    //update edge with cross edge label
-            //    discovery_e[getEdgeLabel(v, w)] = true; //setEdgeLabel(v, w, "Cross")
+                // Add the first flight in route to the traversal vector
+                traversal.push_back(routes[std::stoi(getEdgeLabel(v,w))]->at(0));
             }
         }
     }
-    //returns a vector of edges
-    return traversal;
 } 
-
-  
