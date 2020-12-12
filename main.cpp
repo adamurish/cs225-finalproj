@@ -9,8 +9,8 @@ int print_help(){
     std::cout << "OPERATIONS:" << std::endl;
     std::cout << "sssp : calculates single source shortest path using a specified traversal algorithm" << std::endl;
     std::cout << "\t-- Requires two additional arguments, the start and endpoint for the path, given as airport IATA codes" << std::endl;
-    std::cout << "\t-- Requires a choice of traversal, either BFS or Djikstras" << std::endl;
-    std::cout << "\t sssp [start_airport] [end_airport] [bfs, djikstra]" << std::endl;
+    std::cout << "\t-- Requires a choice of traversal, either BFS or Dijkstras" << std::endl;
+    std::cout << "\t sssp [start_airport] [end_airport] [bfs, dijkstra]" << std::endl;
     std::cout << "airportrank : Uses a modified version of Google's PageRank to calculate airport importance" << std::endl;
     std::cout << "bfs : Traverses the airport graph using breadth first search" << std::endl;
     std::cout << "\t-- Requires one additional argument, the starting point of traversal, given as airport IATA code" << std::endl;
@@ -76,7 +76,7 @@ int main(int argc, char* argv[]){
         }
         string trav = argv[6];
         if(trav == "bfs") image = traffic.renderShortestPath(id, id2, true, false);
-        else if(trav == "djikstra") image = traffic.renderShortestPath(id, id2, false, false);
+        else if(trav == "dijkstra") image = traffic.renderShortestPath(id, id2, false, false);
         else return fail("SSSP: Invalid traversal");
     }
     else if (operation == "airportrank") {
