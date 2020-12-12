@@ -5,22 +5,25 @@ LD = clang++
 
 ALL_NON_EXE_OBJS = ./build/AirGraph.o ./build/BFS.o ./build/shortestPath.o ./build/Djikstra.o ./build/file_parser.o ./build/graph.o ./build/PNG.o ./build/HSLAPixel.o ./build/lodepng.o ./build/AirRenderer.o
 
+OUT_DIR = ./build
+MKDIR_P = mkdir -p
 
 # Set compiler flags to standard for course
 CXXFLAGS = -std=c++1y -stdlib=libc++ -c -g -O0 -Wall -Wextra -Werror -pedantic
 # Set linker flags to standard for course
 LDFLAGS = -std=c++1y -stdlib=libc++ -lc++abi
 
-$(mkdir -p ./build)
+all: $(OUT_DIR) main
 
-all: main
+${OUT_DIR}:
+	${MKDIR_P} ${OUT_DIR}
 
 # Link final project
-main : $(ALL_NON_EXE_OBJS) ./build/main.o
+main : $(OUT_DIR) $(ALL_NON_EXE_OBJS) ./build/main.o
 	$(LD) ./build/main.o $(ALL_NON_EXE_OBJS) $(LDFLAGS) -o traffic
 
 # Link tests
-test: $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
+test: $(OUT_DIR) $(ALL_NON_EXE_OBJS) ./build/tests.o ./build/catchmain.o
 	$(LD) ./build/tests.o ./build/catchmain.o $(ALL_NON_EXE_OBJS) $(LDFLAGS) -o test
 
 # Compile final project
