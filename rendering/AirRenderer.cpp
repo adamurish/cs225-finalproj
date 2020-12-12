@@ -111,7 +111,7 @@ void AirRenderer::draw_line(std::pair<int, int> start, std::pair<int, int> end, 
         //edit pixel
         if((x < width && y < height) && (x > 0 && y > 0)) {
             auto &pix = image.getPixel(x, y);
-            pix.h = 0;
+            pix.h = 110;
             pix.s = 1.0;
             pix.l = 0.5;
         }

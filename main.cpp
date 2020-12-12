@@ -75,8 +75,8 @@ int main(int argc, char* argv[]){
             return fail("SSSP: Invalid airport IATA code");
         }
         string trav = argv[6];
-        if(trav == "bfs") image = traffic.renderShortestPath(id, id2, true);
-        else if(trav == "djikstra") image = traffic.renderShortestPath(id, id2, false);
+        if(trav == "bfs") image = traffic.renderShortestPath(id, id2, true, false);
+        else if(trav == "djikstra") image = traffic.renderShortestPath(id, id2, false, false);
         else return fail("SSSP: Invalid traversal");
     }
     else if (operation == "airportrank") {

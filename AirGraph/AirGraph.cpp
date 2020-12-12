@@ -254,10 +254,18 @@ cs225::PNG AirGraph::renderAirportRank(){
     return ar.draw_airports(airport_vec, radii);
 }
 
-cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end, bool isBFS) {
+cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end, bool isBFS, bool isRanked) {
     //setup base map
     cs225::PNG base;
-    base.readFromFile("mercator4.png");
+    // Check if airport ranking is enabled
+    if (isRanked) {
+        // Use ranked airports as background
+        base = renderAirportRank();
+    }
+    else {
+        // Read in background map
+        base.readFromFile("mercator4.png");
+    }
 
     //initialize renderer with image and id -> airport map
     AirRenderer ar(base, airports);

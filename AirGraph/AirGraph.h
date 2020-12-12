@@ -164,8 +164,9 @@ class AirGraph : public Graph {
         // @param start Vertex representing the source airport
         // @param end Vertex representing the destination airport
         // @param isBFS Bool represenenting whether to use BFS or Djikstra's algorithm (true = BFS)
+        // @param isRanked Bool representing whether to plot with AirportRanked vertices 
         // @return PNG containing render of path
-        cs225::PNG renderShortestPath(Vertex start, Vertex end, bool isBFS);
+        cs225::PNG renderShortestPath(Vertex start, Vertex end, bool isBFS, bool isRanked);
 
         // Render BFS in order of edges traversed
         // @param start Vertex representing start airport of BFS traversal
