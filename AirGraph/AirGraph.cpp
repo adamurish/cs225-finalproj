@@ -175,6 +175,31 @@ int AirGraph::getNumFlights() {
     return flights;
 }
 
+airport AirGraph::airportInfo(Vertex request) {
+    // Check if airport does not exist
+    if (airports.find(request) == airports.end()) {
+        // Instantiate failed airport sentinel
+        airport failed;
+        failed.name = "Not found";
+        failed.city = "Not found";
+        failed.country = "Not found";
+        failed.iata = "Not found";
+        failed.icao = "Not found";
+        failed.latitude = "Not found";
+        failed.longitude = "Not found";
+        failed.altitude = "Not found";
+        failed.tz = "Not found";
+        failed.dst = "Not found";
+        failed.tz_olson = "Not found";
+        failed.source = "Not found";
+
+        // Return sentinel
+        return failed;
+    }
+    // Get airport from map
+    return airports[request];
+}
+
 cs225::PNG AirGraph::render(bool draw_airports, bool draw_flights) {
     //setup base map
     cs225::PNG base;

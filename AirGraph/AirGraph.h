@@ -108,6 +108,11 @@ class AirGraph : public Graph {
 
         // Common AirGraph queries
 
+        // Retrieve info about requested airport
+        // @param request Vertex of requested airport
+        // @return airport struct containing info about airport
+        airport airportInfo(Vertex request);
+
         // Return the OpenFlights ID of an airport given it's IATA
         // @param airport String containing the IATA of the target airport
         // @return String containing the OpenFlights ID of the requested airport ("-1" if not found)
