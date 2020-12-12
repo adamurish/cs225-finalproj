@@ -126,11 +126,15 @@ class AirGraph : public Graph {
         // Algorithms
 
         // Generates a BFS traversal of the AirGraph from a given vertex.
-        // Does not run against disconnected components not containing the starting airport
+        // Used in shortestPath
         // @param airport airport vertex from which to start BFS
         // @return Unoredered map of prdecessors
         std::unordered_map<Vertex,Vertex> BFS(const Vertex start);
 
+        // Generates a BFS traversal of the AirGraph from a given vertex.
+        // Used in renderBFS
+        // @param airport airport vertex from which to start BFS
+        // @return Vector of flights in order of visitation
         std::vector<flight> BFS_Order(const Vertex start);
 
         // ALL ALGOS WILL IMPLEMENT THIS INTERFACE
