@@ -11,6 +11,8 @@ CXXFLAGS = -std=c++1y -stdlib=libc++ -c -g -O0 -Wall -Wextra -Werror -pedantic
 # Set linker flags to standard for course
 LDFLAGS = -std=c++1y -stdlib=libc++ -lc++abi
 
+$(mkdir -p ./build)
+
 all: main
 
 # Link final project
