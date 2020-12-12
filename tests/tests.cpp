@@ -91,7 +91,7 @@ TEST_CASE("SSSP finds shortest path using BFS", "[module=algorithms]"){
     REQUIRE(path.size() == 3);
 }
 
-TEST_CASE("SSSP finds shortest path using Djikstra", "[module=algorithms]"){
+TEST_CASE("SSSP finds shortest path using Dijkstra", "[module=algorithms]"){
     FileParser ap_fp("datasets/airports.dat");
     FileParser route_fp("datasets/routes.dat");
     AirGraph ag;
@@ -101,7 +101,7 @@ TEST_CASE("SSSP finds shortest path using Djikstra", "[module=algorithms]"){
     Vertex lax = ag.getAirportID("LAX");
     Vertex abt = ag.getAirportID("ABT");
 
-    auto path = ag.shortestPath(lax, abt, ag.Djikstra(lax));
+    auto path = ag.shortestPath(lax, abt, ag.Dijkstra(lax));
     REQUIRE(path.front() == lax);
     REQUIRE(path.back() == abt);
     //the shortest path from lax to abt uses only 1 stop in between

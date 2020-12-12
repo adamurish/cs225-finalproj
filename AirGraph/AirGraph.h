@@ -138,10 +138,10 @@ class AirGraph : public Graph {
         std::vector<flight> BFS_Order(const Vertex start);
 
         // ALL ALGOS WILL IMPLEMENT THIS INTERFACE
-        // Djikstra's algorithm for Single Source Shortest Path
+        // Dijkstra's algorithm for Single Source Shortest Path
         // @param source Vertex key (OpenFlights ID) of requested source airport
         // @return Vector of airports Vertexes defining path
-        std::unordered_map<Vertex, Vertex> Djikstra(const Vertex source);
+        std::unordered_map<Vertex, Vertex> Dijkstra(const Vertex source);
 
         // Modified PageRank to determine relative importance of Airports
         // @param vertices A vector of which vertices to rank
@@ -160,10 +160,10 @@ class AirGraph : public Graph {
         // Runs against all airports and flights currently in AirGraph
         cs225::PNG renderAirportRank();
 
-        // Renders the shortest path between two airports using Djikstra's algorithm or BFS
+        // Renders the shortest path between two airports using Dijkstra's algorithm or BFS
         // @param start Vertex representing the source airport
         // @param end Vertex representing the destination airport
-        // @param isBFS Bool represenenting whether to use BFS or Djikstra's algorithm (true = BFS)
+        // @param isBFS Bool represenenting whether to use BFS or Dijkstra's algorithm (true = BFS)
         // @param isRanked Bool representing whether to plot with AirportRanked vertices 
         // @return PNG containing render of path
         cs225::PNG renderShortestPath(Vertex start, Vertex end, bool isBFS, bool isRanked);

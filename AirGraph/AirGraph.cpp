@@ -271,7 +271,7 @@ cs225::PNG AirGraph::renderShortestPath(Vertex start, Vertex end, bool isBFS, bo
     AirRenderer ar(base, airports);
 
     // Store path from chosen algorithm
-    std::unordered_map<Vertex, Vertex> travel = isBFS ? BFS(start) : Djikstra(start);
+    std::unordered_map<Vertex, Vertex> travel = isBFS ? BFS(start) : Dijkstra(start);
 
     // Get shortest path
     std::vector<Vertex> path = shortestPath(start, end, travel);

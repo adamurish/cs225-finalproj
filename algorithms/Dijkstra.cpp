@@ -2,7 +2,7 @@
 
 #include "../AirGraph/AirGraph.h"
 
-std::unordered_map<Vertex, Vertex> AirGraph::Djikstra(const Vertex start) {    
+std::unordered_map<Vertex, Vertex> AirGraph::Dijkstra(const Vertex start) {    
     
     typedef std::pair<int, Vertex> vPair;
     
